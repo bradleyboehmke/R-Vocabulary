@@ -1,0 +1,50 @@
+---
+title: "R Vocabulary"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+<style>
+div {
+    text-align: justify;
+    text-justify: inter-word;
+}
+</style>
+
+<br>
+<br>
+
+# Introduction
+R is an incredibly powerful programming language and, also, extremely vast in its capabilities.  With over 7000 packages on [CRAN](https://cran.r-project.org), 1000 on [Bioconductor](https://www.bioconductor.org), and countless more available through [GitHub](https://github.com)<sup><a href="#fn1" id="ref1">1</a></sup> its inconceivable to be knowledgeable or fluent in them all (or even a fraction of them!).  Fortunately, to be fluent in R does not mean to be all-knowing but, rather, to have a fundamental R vocabulary.
+
+> *"An important part of being fluent in R is having a good working, vocabulary."* - Hadley Wickham
+
+So what constitutes a fundamental R vocabulary?  This obviously is a subjective question and one I don't care to debate.  However, I believe [Hadley Wickham](http://had.co.nz) provides a great [vocabulary](http://adv-r.had.co.nz/Vocabulary.html) basis to build on. The purpose of this project is to elaborate on Hadley's list in two ways:
+
+1. Although information on these functions are available from multiple resources this project provides a centralized means for learning, and sharing additional resources relating to, the fundamental R vocabulary.
+2. In addition, I have found myself relying on additional R functions on a routine basis.  As a result, I will add onto Hadley's list with additional vocabulary items I have found useful.
+
+The end result, I hope, will be a comprehensive and centralized resource for students and practitioners to become fluent in R.<sup><a href="#fn2" id="ref2">2</a></sup>  Enjoy!
+
+# Vocabulary Topics
+* [Basics](#basics)
+* Numbers
+* Strings and Dates
+* Data structures
+* Data Inputs/Outputs
+* Data wrangling
+* Visualization
+* Statistical Modeling
+* Debugging
+
+
+
+
+
+<br><br>
+<sup id="fn1">1. [These counts are as of September 18, 2015]<a href="#ref1" title="Jump back to footnote 1 in the text.">"&#8617;"</a><sup>
+
+<sup id="fn2">2. [I use the [RStudio](https://www.rstudio.com) IDE, as a result there may be topics and functionality that are specific to this IDE.]<a href="#ref2" title="Jump back to footnote 2 in the text.">"&#8617;"</a><sup>

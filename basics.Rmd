@@ -1,0 +1,24 @@
+---
+title: "The Basics"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+<style>
+div {
+    text-align: justify;
+    text-justify: inter-word;
+}
+</style>
+
+<br>
+<br>
+
+* [Getting Help](#getting_help)
+* [Workspace](#workspace)
+* Working with Packages
+
+

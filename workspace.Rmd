@@ -1,0 +1,27 @@
+---
+title: "Workspace"
+author: "Brad Boehmke"
+date: "September 18, 2015"
+output:
+  html_document:
+    keep_md: true
+---
+
+<style>
+#div {
+#    text-align: justify;
+#    text-justify: inter-word;
+#}
+</style>
+
+<br>
+<br>
+
+ls
+exists
+rm
+getwd
+setwd
+q
+source
+
