@@ -1,6 +1,7 @@
-----------
+---
+layout: post
 title: Getting Help
-----------
+---
 
 # Getting Help
 
