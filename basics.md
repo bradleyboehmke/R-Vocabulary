@@ -15,6 +15,6 @@ div {
 
 # The Basics
 
-* [Getting Help](#getting_help)
+* [Getting Help](getting_help)
 * [Workspace](#workspace)
 * Working with Packages
