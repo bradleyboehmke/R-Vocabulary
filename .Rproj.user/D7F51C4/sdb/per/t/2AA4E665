@@ -1,0 +1,17 @@
+{
+    "contents" : "---\ntitle: \"The Basics\"\nauthor: NULL\ndate: NULL\noutput:\n  html_document:\n    keep_md: true\n---\n\n<style>\ndiv {\n    text-align: justify;\n    text-justify: inter-word;\n}\n</style>\n\n<br>\n<br>\n\n* [Getting Help](#getting_help)\n* [Workspace](#workspace)\n* Working with Packages\n\n\n",
+    "created" : 1442610968193.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1034734577",
+    "id" : "2AA4E665",
+    "lastKnownWriteTime" : 1442606255,
+    "path" : "~/Desktop/Personal/R Vocabulary/R-Vocabulary/basics.Rmd",
+    "project_path" : "basics.Rmd",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
