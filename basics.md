@@ -1,5 +1,6 @@
 ---
-title: "The Basics"
+layout: post
+title: U.S. Median Income Growth
 ---
 
 <style>
