@@ -1,0 +1,28 @@
+---
+title: "Setting the Seed"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Numbers](numbers) &#187; Setting the seed for reproducible random numbers
+
+<br>
+
+If you want to generate a sequence of random numbers and then be able to reproduce that same sequence of random numbers later you can set the random number seed generator with `set.seed()`.  
+
+**Example:**
+
+```{r, eval=TRUE, echo=TRUE}
+set.seed(197)
+rnorm(n = 10, mean = 0, sd = 1)
+```
+
+<br>
+
+```{r, eval=TRUE, echo=TRUE}
+set.seed(197)
+rnorm(n = 10, mean = 0, sd = 1)
+```
