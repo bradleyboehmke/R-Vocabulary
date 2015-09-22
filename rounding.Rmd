@@ -1,0 +1,38 @@
+---
+title: "Rounding"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Numbers](numbers) &#187; Rounding
+
+<br>
+
+There are many ways of rounding to the nearest integer, up, down, or toward a specified decimal place.  Lets assume x = `r seq(1, 6, by = .35)`
+
+```{r, eval=TRUE, echo=FALSE}
+x <- seq(1, 6, by = .35)
+```
+
+**Round to the nearest integer:**
+```{r, eval=TRUE, echo=TRUE}
+round(x)
+```
+
+**Round up:**
+```{r, eval=TRUE, echo=TRUE}
+ceiling(x)
+```
+
+**Round down:**
+```{r, eval=TRUE, echo=TRUE}
+floor(x)
+```
+
+**Round to a specified decimal:**
+```{r, eval=TRUE, echo=TRUE}
+round(x, digits = 1)
+```
