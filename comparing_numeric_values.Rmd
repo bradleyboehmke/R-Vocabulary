@@ -30,7 +30,7 @@ x != y    # is x not equal to y
 ```
 
 These operations can be used for single number comparison:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- 9
 y <- 10
 
@@ -38,7 +38,7 @@ x == y
 ```
 
 and also for comparison of numbers within vectors:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- c(1, 4, 9, 12)
 y <- c(4, 4, 9, 13)
 
@@ -46,12 +46,12 @@ x == y
 ```
 
 Note that logical values `TRUE` and `FALSE` equate to 1 and 0 respectively.  So if you want to identify the number of equal values in two vectors you can wrap the operation in the `sum()` function:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 sum(x == y)    # How many pairwise equal values are in vectors x and y
 ```
 
 If you need to identify the location of pairwise equalities in two vectors you can wrap the operation in the `which()` function:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 which(x == y)    # Where are the pairwise equal values located in vectors x and y
 ```
 
@@ -61,7 +61,7 @@ which(x == y)    # Where are the pairwise equal values located in vectors x and 
 # Exact Equality
 <a name="b"></a>
 To test if two objects are exactly equal:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- c(4, 4, 9, 12)
 y <- c(4, 4, 9, 13)
 
@@ -69,7 +69,7 @@ identical(x, y)
 ```
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- c(4, 4, 9, 12)
 y <- c(4, 4, 9, 12)
 
@@ -81,7 +81,7 @@ identical(x, y)
 # Floating Point Comparison
 <a name="c"></a>
 Sometimes you wish to test for 'near equality'.  The `all.equal()` function allows you to test for equality with a difference tolerance of 1.5e-8.
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- c(4.00000005, 4.00000008)
 y <- c(4.00000002, 4.00000006)
 
@@ -89,7 +89,7 @@ all.equal(x, y)
 ```
 
 If the difference is greater than the tolerance level the function will return the mean relative difference:
-```{r, echo=TRUE}
+```{r, echo=TRUE, collapse=TRUE}
 x <- c(4.005, 4.0008)
 y <- c(4.002, 4.0006)
 

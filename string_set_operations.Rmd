@@ -1,0 +1,72 @@
+---
+title: "Set Operations for Strings"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Character Strings](characters) &#187; [String manipulation](string_manipulation) &#187; Set operations
+
+* <a href="#union">Set union</a>
+* <a href="#intersect">Set intersection</a>
+* <a href="#setdiff">Identifying different elements</a>
+* <a href="#equality">Testing for element equality</a>
+* <a href="#exact_equality">Testing for *exact* equality</a>
+* <a href="#in_element">Identifying if elements are contained in a string</a>
+* <a href="#sort">Sorting a string</a>
+
+<br>
+
+
+<a name="union"></a>
+
+# Set Union
+
+
+<br>
+
+<a name="intersect"></a>
+
+# Set Intersection
+
+
+<br>
+
+<a name="setdiff"></a>
+
+# Identifying Different Elements
+
+
+<br>
+
+<a name="equality"></a>
+
+# Testing for Element Equality
+
+
+<br>
+
+<a name="exact_equality"></a>
+
+# Testing for *Exact* Equality
+
+
+<br>
+
+<a name="in_element"></a>
+
+# Identifying if Elements are Contained in a String
+
+
+<br>
+
+<a name="sort"></a>
+
+# Sorting a String
+
+
+<br>
+
+<small><a href="#">Go to top</a></small>

@@ -30,9 +30,6 @@ x <- 9
 y <- 10
 
 x == y
-```
-
-```
 ## [1] FALSE
 ```
 
@@ -43,9 +40,6 @@ x <- c(1, 4, 9, 12)
 y <- c(4, 4, 9, 13)
 
 x == y
-```
-
-```
 ## [1] FALSE  TRUE  TRUE FALSE
 ```
 
@@ -53,9 +47,6 @@ Note that logical values `TRUE` and `FALSE` equate to 1 and 0 respectively.  So 
 
 ```r
 sum(x == y)    # How many pairwise equal values are in vectors x and y
-```
-
-```
 ## [1] 2
 ```
 
@@ -63,9 +54,6 @@ If you need to identify the location of pairwise equalities in two vectors you c
 
 ```r
 which(x == y)    # Where are the pairwise equal values located in vectors x and y
-```
-
-```
 ## [1] 2 3
 ```
 
@@ -81,9 +69,6 @@ x <- c(4, 4, 9, 12)
 y <- c(4, 4, 9, 13)
 
 identical(x, y)
-```
-
-```
 ## [1] FALSE
 ```
 
@@ -94,9 +79,6 @@ x <- c(4, 4, 9, 12)
 y <- c(4, 4, 9, 12)
 
 identical(x, y)
-```
-
-```
 ## [1] TRUE
 ```
 
@@ -111,9 +93,6 @@ x <- c(4.00000005, 4.00000008)
 y <- c(4.00000002, 4.00000006)
 
 all.equal(x, y)
-```
-
-```
 ## [1] TRUE
 ```
 
@@ -124,9 +103,6 @@ x <- c(4.005, 4.0008)
 y <- c(4.002, 4.0006)
 
 all.equal(x, y)
-```
-
-```
 ## [1] "Mean relative difference: 0.0003997102"
 ```
 

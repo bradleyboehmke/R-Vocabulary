@@ -1,0 +1,238 @@
+---
+title: "Character Basics"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Character Strings](characters) &#187; Character string basics
+
+* <a href="#creating">Creating character strings</a> 
+* <a href="#converting">Converting to character strings</a> 
+* <a href="#printing">Printing strings</a>
+* <a href="#counting_elements">Assessing number of elements in string</a>
+* <a href="#counting_char">Assessing number of characters in string</a>
+
+<br>
+
+<a name="creating"></a>
+
+# Creating Strings
+
+The most basic way to create strings is to use quotation marks and assign a string to an object similar to creating number sequences.
+```{r, eval=TRUE, collapse=TRUE}
+a <- "learning to create"    # create string a
+b <- "character strings"     # create string b
+```
+
+The `paste()` function provides a versatile means for creating and building strings. It takes one or more R objects, converts them to "character", and then it concatenates (pastes) them to form one or several character strings.
+
+```{r, eval=TRUE, collapse=TRUE}
+# paste together string a & b
+paste(a, b)                      
+
+# paste character and number strings (converts numbers to character class)
+paste("The life of", pi)           
+
+# paste multiple strings
+paste("I", "love", "R")            
+
+# paste multiple strings with a separating character
+paste("I", "love", "R", sep = "-")  
+
+# use paste0() to paste without spaces btwn characters
+paste0("I", "love", "R")            
+
+# paste objects with different lengths
+paste("R", 1:5, sep = " v1.")       
+```
+
+<br>
+
+<a name="converting"></a>
+
+# Converting to Strings
+Test if strings are characters with `is.character()` and convert strings to character with `as.character()` or with `toString()`.
+```{r, eval=TRUE, collapse=TRUE}
+a <- "The life of"    
+b <- pi
+
+is.character(a)
+
+is.character(b)
+
+c <- as.character(b)
+is.character(c)
+
+toString(c("Aug", 24, 1980))
+```
+
+
+<br>
+
+<a name="printing"></a>
+
+# Printing Strings
+The common printing methods include:
+
+
+**Function**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Description**
+
+<a href="#print">`print()`</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generic printing
+
+<a href="#noquote">`noquote()`</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print with no quotes
+
+<a href="#cat">`cat()`</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;concatenate
+
+<a href="#sprintf">`sprintf()`</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printing
+
+<br>
+
+<a name="print"></a>
+
+### `print()`
+The primary printing function in R is `print()`
+```{r, eval=TRUE, collapse=TRUE}
+x <- "learning to print strings"    
+
+# basic printing
+print(x)                
+
+# print without quotes
+print(x, quote = FALSE)  
+
+```
+
+
+<br>
+
+<a name="noquote"></a>
+
+### `noquote()`
+An alternative to printing without quotes.
+```{r, eval=TRUE, collapse=TRUE}
+noquote(x)
+```
+
+
+<br>
+
+<a name="cat"></a>
+
+### `cat()`
+Another very useful function is `cat()` which allows us to concatenate objects and print them either on screen or to a file.  The output result is very similar to `noquote()`; however, `cat()` does not print the numeric line indicator.  As a result, `cat()` can be useful for printing nicely formated responses to users.
+
+```{r, eval=TRUE, collapse=TRUE}
+# basic printing (similar to noquote)
+cat(x)                   
+
+# combining character strings
+cat(x, "in R")           
+
+# basic printing of alphabet
+cat(letters)             
+
+# specify a seperator between the combined characters
+cat(letters, sep = "-")  
+
+# collapse the space between the combine characters
+cat(letters, sep = "")   
+```
+
+You can also format the line width for printing long strings using the `fill` argument:
+```{r, eval=TRUE, collapse=TRUE, warning=FALSE}
+x <- "Today I am learning how to print strings."
+y <- "Tomorrow I plan to learn about textual analysis."
+z <- "The day after I will take a break and drink a beer."
+
+cat(x, y, z, fill = 0)
+
+cat(x, y, z, fill = 5)
+```
+
+<br>
+
+<a name="sprintf"></a>
+
+### `sprintf()`
+A wrapper for the C function `sprintf`, that returns a character vector containing a formatted combination of text and variable values.
+
+To substitute in a string or string variable, use `%s`:
+```{r, eval=TRUE, collapse=TRUE}
+x <- "print strings"
+
+# substitute a single string/variable
+sprintf("Learning to %s in R", x)    
+
+# substitute multiple strings/variables
+y <- "in R"
+sprintf("Learning to %s %s", x, y)   
+```
+
+
+For integers, use `%d` or a variant:
+```{r, eval=TRUE, collapse=TRUE}
+version <- 3
+
+# substitute integer
+sprintf("This is R version:%d", version)
+
+# print with leading spaces
+sprintf("This is R version:%4d", version)   
+
+# can also lead with zeros
+sprintf("This is R version:%04d", version)   
+```
+
+
+For floating-point numbers, use `%f` for standard notation, and `%e` or `%E` for exponential notation:
+```{r, eval=TRUE, collapse=TRUE}
+sprintf("%f", pi)         # '%f' indicates 'fixed point' decimal notation
+
+sprintf("%.3f", pi)       # decimal notation with 3 decimal digits
+
+sprintf("%1.0f", pi)      # 1 integer and 0 decimal digits
+
+sprintf("%5.1f", pi)      # decimal notation with 5 total decimal digits and only 1 to the right of the decimal point
+
+sprintf("%05.1f", pi)     # same as above but fill empty digits with zeros
+
+sprintf("%+f", pi)        # print with sign (positive)
+
+sprintf("% f", pi)        # prefix a space
+
+sprintf("%e", pi)         # exponential decimal notation 'e'
+
+sprintf("%E", pi)         # exponential decimal notation 'E'
+```
+
+
+<br>
+
+<a name="counting_elements"></a>
+
+# Counting Elements
+To count the number of elements in a string use `length()`:
+```{r, eval=TRUE, collapse=TRUE}
+length("How many elements are in this string?")
+
+length(c("How", "many", "elements", "are", "in", "this", "string?"))
+```
+
+<br>
+
+<a name="counting_char"></a>
+
+# Counting Characters
+To count the number of characters in a string use `nchar()`:
+```{r, eval=TRUE, collapse=TRUE}
+nchar("How many characters are in this string?")
+
+nchar(c("How", "many", "characters", "are", "in", "this", "string?"))
+```
+
+<br>
+
+<small><a href="#">Go to top</a></small>
