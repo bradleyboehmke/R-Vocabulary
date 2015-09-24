@@ -23,49 +23,99 @@ output:
 <a name="union"></a>
 
 # Set Union
+To obtain the elements of the union between two character vectors use `union()`:
+```{r, collapse=TRUE, eval=TRUE, echo=TRUE}
+set_1 <- c("lagunitas", "bells", "dogfish", "summit", "odell")
+set_2 <- c("sierra", "bells", "harpoon", "lagunitas", "founders")
 
+union(set_1, set_2)
+```
 
 <br>
 
 <a name="intersect"></a>
 
 # Set Intersection
-
+To obtain the common elements of two character vectors use `intersect()`:
+```{r, collapse=TRUE, eval=TRUE, echo=TRUE}
+intersect(set_1, set_2)
+```
 
 <br>
 
 <a name="setdiff"></a>
 
 # Identifying Different Elements
+To obtain the non-common elements, or the difference, of two character vectors use `setdiff()`:
+```{r, collapse=TRUE, eval=TRUE, echo=TRUE}
+# returns elements in set_1 not in set_2
+setdiff(set_1, set_2)
 
+# returns elements in set_2 not in set_1
+setdiff(set_2, set_1)
+```
 
 <br>
 
 <a name="equality"></a>
 
 # Testing for Element Equality
+To test if two vectors contain the same elements regardless of order use `setequal()`:
+```{r, collapse=TRUE}
+set_3 <- c("woody", "buzz", "rex")
+set_4 <- c("woody", "andy", "buzz")
+set_5 <- c("andy", "buzz", "woody")
 
+setequal(set_3, set_4)
+
+setequal(set_4, set_5)
+```
 
 <br>
 
 <a name="exact_equality"></a>
 
 # Testing for *Exact* Equality
+To test if two character vectors are equal in content and order use `identical()`:
+```{r, collapse=TRUE}
+set_6 <- c("woody", "andy", "buzz")
+set_7 <- c("andy", "buzz", "woody")
+set_8 <- c("woody", "andy", "buzz")
 
+identical(set_6, set_7)
+
+identical(set_6, set_8)
+```
 
 <br>
 
 <a name="in_element"></a>
 
 # Identifying if Elements are Contained in a String
+To test if an element is contained within a character vector use `is.element()` or `%in%`:
+```{r, collapse=TRUE}
+good <- "andy"
+bad <- "sid"
 
+is.element(good, set_8)
+
+good %in% set_8
+
+bad %in% set_8
+
+```
 
 <br>
 
 <a name="sort"></a>
 
 # Sorting a String
+To sort a character vector use `sort()`:
+```{r, collapse=TRUE}
+sort(set_8)
 
+sort(set_8, decreasing = TRUE)
+```
 
 <br>
 

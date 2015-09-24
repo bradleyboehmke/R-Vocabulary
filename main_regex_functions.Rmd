@@ -1,0 +1,135 @@
+---
+title: "Main Regex Functions"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Character Strings](characters) &#187; [Regular Expressions](regex) &#187; [Regex Functions](regex_functions) &#187; Main regex functions
+
+* <a href="#finding">Pattern finding functions</a>
+* <a href="#replacement">Pattern replacement functions</a>
+* <a href="#splitting">Splitting character vectors</a>
+
+<br>
+
+<a name="finding"></a>
+
+# Pattern Finding Functions
+There are five functions that provide pattern matching capabilities.  The three functions that I provide examples for are ones that are most common.  The two other functions which I do not illustrate are `gregexpr()` and `regexec()` which provide similar capabilities as `regexpr()` but with the output in list form.
+
+* <a href="#grep">Pattern matching with values or indices as outputs</a>
+* <a href="#grepl">Pattern matching with logical (TRUE/FALSE) outputs</a>
+* <a href="#regexpr">Identifying the location in the string where the patter exists</a>
+
+<a name="grep"></a>
+
+## grep()
+To find a pattern in a character vector and to have the element values or indices as the output use `grep()`:
+```{r, collapse=TRUE}
+# use the built in data set `state.division`
+head(as.character(state.division))
+
+
+# find the elements which match the patter
+grep("North", state.division)
+
+
+# use 'value = TRUE' to show the element value
+grep("North", state.division, value = TRUE)
+
+
+# can use the 'invert' argument to show the non-matching elements
+grep("North | South", state.division, invert = TRUE)
+```
+
+<br>
+
+<a name="grepl"></a>
+
+## grepl()
+To find a pattern in a character vector and to have logical (TRUE/FALSE) outputs use `grep()`:
+```{r, collapse=TRUE}
+grepl("North | South", state.division)
+
+# wrap in sum() to get the count of matches
+sum(grepl("North | South", state.division))
+```
+
+
+<a name="regexpr"></a>
+
+## regexpr()
+To find exactly where the pattern exists in a string use `regexpr()`:
+```{r, collapse=TRUE}
+x <- c("v.111", "0v.11", "00v.1", "000v.", "00000")
+
+regexpr("v.", x)
+```
+
+The output of `regexpr()` can be interepreted as follows.  The first element provides the starting position of the match in each element.  Note that the value **-1** means there is no match.  The second element (attribute "match length") provides the length of the match.  The third element (attribute "useBytes") has a value TRUE meaning matching was done byte-by-byte rather than character-by-character.
+
+<br>
+
+<a name="replacement"></a>
+
+# Pattern Replacement Functions
+In addition to finding patterns in character vectors, its also common to want to replace a pattern in a string with a new patter.  There are two options for this:
+
+* <a href="#sub">Replace the first occurrence</a>
+* <a href="#gsub">Replace all occurrences</a>
+
+
+<a name="sub"></a>
+
+## sub()
+To replace the **first** matching occurrence of a pattern use `sub()`:
+```{r, collapse=TRUE}
+new <- c("New York", "new new York", "New New New York")
+new
+
+# Default is case sensitive
+sub("New", replacement = "Old", new)
+
+# use 'ignore.case = TRUE' to perform the obvious
+sub("New", replacement = "Old", new, ignore.case = TRUE)
+```
+
+<br>
+
+<a name="gsub"></a>
+
+## gsub()
+To replace **all** matching occurrences of a pattern use `gsub()`:
+
+```{r, collapse=TRUE}
+# Default is case sensitive
+gsub("New", replacement = "Old", new)
+
+# use 'ignore.case = TRUE' to perform the obvious
+gsub("New", replacement = "Old", new, ignore.case = TRUE)
+```
+
+<br>
+
+<a name="splitting"></a>
+
+# Splitting Character Vectors
+To split the elements of a character string use `strsplit()`:
+```{r, collapse=TRUE}
+x <- paste(state.name[1:10], collapse = " ")
+
+# output will be a list
+strsplit(x, " ")
+
+# output as a vector rather than a list
+unlist(strsplit(x, " "))
+```
+
+
+<br>
+
+<small><a href="#">Go to top</a></small>
+
