@@ -1,0 +1,34 @@
+---
+title: "Converting Strings to Dates"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Dates](dates) &#187; Getting the current date & time
+
+To get current date and time information:
+
+```{r, collapse=TRUE}
+Sys.timezone()
+
+Sys.Date()
+
+Sys.time()
+```
+
+<br>
+
+If using the `lubridate` package:
+
+```{r, collapse=TRUE}
+library(lubridate)
+
+now()
+```
+
+<br>
+
+<small><a href="#">Go to top</a></small>
