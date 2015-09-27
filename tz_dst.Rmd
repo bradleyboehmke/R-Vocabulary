@@ -1,0 +1,66 @@
+---
+title: "Time Zones & Daylight Savings"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Dates](dates) &#187; Dealing with time zones & daylight savings
+
+* <a href="#time_zones">Time zones</a>
+* <a href="#daylight_savings">Daylight savings</a>
+
+<br>
+
+<a name="time_zones"></a>
+
+## Time zones
+
+To change the time zone for a date/time we can use the `with_tz()` function which will also update the clock time to align with the updated time zone:
+```{r, collapse=TRUE}
+library(lubridate)
+
+time <- now()
+time
+
+with_tz(time, tzone = "MST")
+```
+
+If the time zone is incorrect or for some reason you need to change the time zone without changing the clock time you can force it with `force_tz()`:
+
+```{r, collapse=TRUE}
+time
+
+force_tz(time, tzone = "MST")
+```
+
+<br>
+
+<a name="daylight_savings"></a>
+
+## Daylight Savings
+We can easily work with daylight savings times to eliminate impacts on date/time calculations:
+
+```{r, collapse=TRUE}
+# most recent daylight savings time
+ds <- ymd_hms("2015-03-08 01:59:59", tz = "US/Eastern")
+
+# if we add a duration of 1 sec we gain an extra hour
+ds + dseconds(1)
+
+# add a duration of 2 hours will reflect actual daylight savings clock time 
+# that occured 2 hours after 01:59:59 on 2015-03-08
+ds + dhours(2)
+
+# add a period of two hours will reflect clock time that normally occurs after
+# 01:59:59 and is not influenced by daylight savings time.
+ds + hours(2)
+```
+
+
+<br>
+
+<small><a href="#">Go to top</a></small>
+

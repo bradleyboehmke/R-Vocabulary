@@ -1,0 +1,62 @@
+---
+title: "Create date sequences"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Dates](dates) &#187; Creating date sequences
+
+* <a href="#date_seq">Date sequences</a>
+* <a href="#time_seq">Time sequences</a>
+
+<br>
+
+<a name="date_seq"></a>
+
+## Date Sequences
+
+To create a sequence of dates we can leverage the [`seq()`](generating_sequence_numbers) function:
+```{r, collapse=TRUE}
+seq(as.Date("2010-1-1"), as.Date("2015-1-1"), by = "years")
+
+seq(as.Date("2015/1/1"), as.Date("2015/12/30"), by = "quarter")
+
+seq(as.Date('2015-09-15'), as.Date('2015-09-30'), by = "2 days")
+```
+
+<br>
+
+Or in lubridate:
+```{r, collapse=TRUE}
+library(lubridate)
+
+seq(ymd("2010-1-1"), ymd("2015-1-1"), by = "years")
+
+seq(ymd("2015/1/1"), ymd("2015/12/30"), by = "quarter")
+
+seq(ymd('2015-09-15'), ymd('2015-09-30'), by = "2 days")
+```
+
+<br>
+
+<a name="time_seq"></a>
+
+## Time Sequences
+
+Creating sequences with time is very similar; however, we need to make sure our date object is POSIXct rather than just a Date object (as produced by `as.Date`):
+```{r, collapse=TRUE}
+seq(as.POSIXct("2015-1-1 0:00"), as.POSIXct("2015-1-1 12:00"), by = "hour")
+
+# with lubridate
+seq(ymd_hm("2015-1-1 0:00"), ymd_hm("2015-1-1 12:00"), by = "hour")
+```
+
+
+<br>
+
+<small><a href="#">Go to top</a></small>
+
+
