@@ -1,0 +1,156 @@
+---
+title: "Matrix"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Data Structures](data_structures) &#187; Matrix
+
+* <a href="#creating">Creating</a>
+* <a href="#adding">Adding on to</a>
+* <a href="#attributes">Adding attributes</a>
+* <a href="#subsetting">Subsetting</a>
+
+
+<br>
+
+<a name="creating"></a>
+
+# Creating
+Matrices are simply vectors with a dimension attribute.  Matrices are constructed column-wise, so entries can be thought of starting in the “upper left” corner and running down the columns.  We can create a matrix using the `matrix()` function:
+```{r, collapse=TRUE}
+# numeric matrix
+m1 <- matrix(1:6, nrow = 2, ncol = 3)
+m1
+
+# structure of m1 is simply integer vector with an added
+# dimension attribute
+str(m1)
+attributes(m1)
+
+# can also create a character matrix
+m2 <- matrix(letters[1:6], nrow = 2, ncol = 3)
+m2
+
+# structure of m2 is simply character vector with dimensions
+str(m2)
+attributes(m2)
+```
+
+Matrices can also be created using the column-bind `cbind()` and row-bind `rbind()` functions:
+```{r, collapse=TRUE}
+v1 <- 1:4
+v2 <- 5:8
+
+cbind(v1, v2)
+
+rbind(v1, v2)
+
+# bind several vectors together
+v3 <- 9:12
+
+cbind(v1, v2, v3)
+```
+
+
+<br>
+
+<a name="adding"></a>
+
+# Adding on to
+We can leverage the `cbind()` and `rbind()` functions for adding onto matrices as well:
+```{r, collapse=TRUE}
+m1 <- cbind(v1, v2)
+m1
+
+# add a new column
+cbind(m1, v3)
+
+# or add a new row
+rbind(m1, c(4.1, 8.1))
+```
+
+
+
+<br>
+
+<a name="attributes"></a>
+
+# Adding attributes
+As previously mentioned, matrices by default will have a dimension attribute.  However, matrices can also have additional attributes such as row names, column names, and comments:
+```{r, collapse=TRUE}
+# basic matrix
+m2 <- matrix(1:12, nrow = 4, ncol = 3)
+m2
+attributes(m2)
+
+# add row names
+rownames(m2) <- c("row1", "row2", "row3", "row4")
+m2
+attributes(m2)
+
+# add column names
+colnames(m2) <- c("col1", "col2", "col3")
+m2
+attributes(m2)
+
+# another option is to use the `dimnames()` function
+# row names are contained in the first list item
+dimnames(m2)[[1]] <- c("row_1", "row_2", "row_3", "row_4")
+m2
+
+# column names are contained in the second list item
+dimnames(m2)[[2]] <- c("col_1", "col_2", "col_3")
+m2
+
+# adding a comment attribute
+comment(m2) <- "adding a comment to a matrix"
+attributes(m2)
+```
+
+<br>
+
+<a name="subsetting"></a>
+
+# Subsetting
+To subset matrices we use the `[` operator; however, since matrices have 2 dimensions we need to incorporate subsetting arguments for both dimensions.  A generic form of matrix subsetting looks like: `matrix[rows, columns]`.  The primary differences in matrix subsetting is what we use for the 'rows' and 'columns' arguments.
+```{r, collapse=TRUE}
+m2
+
+# subset for rows 1 and 2 but get all columns
+m2[1:2, ]
+
+# subset for columns 1 and 3 but get all rows
+m2[ , c(1, 3)]
+
+# subset for both rows and columns
+m2[1:2, c(1, 3)]
+
+# use a vector to subset
+v <- c(1, 2, 4)
+m2[v, c(1, 3)]
+
+# use names to subset
+m2[c("row_1", "row_3"), ]
+
+```
+
+Note that subsetting matrices with the`[` operator will simplify<sup><a href="#fn1" id="ref1">1</a></sup> the results to the lowest possible dimension.  To avoid this you can introduce the `drop = FALSE` argument:
+```{r, collapse=TRUE}
+# simplifying results in a named vector
+m2[, 2]
+
+# preserving results in a 4x1 matrix
+m2[, 2, drop = FALSE]
+```
+
+<br>
+
+<small><a href="#">Go to top</a></small>
+
+<br>
+<br>
+<sup id="fn1">1. [Its important to understand the difference between simplifying and preserving subsetting.  **Simplifying** subsets returns the simplest possible data structure that can represent the output. **Preserving** subsets keeps the structure of the output the same as the input.  See Hadley Wickham's section on [Simplifying vs. Preserving Subsetting](http://adv-r.had.co.nz/Subsetting.html#subsetting-operators) to learn more.]<a href="#ref1" title="Jump back to footnote 1 in the text.">"&#8617;"</a><sup>
