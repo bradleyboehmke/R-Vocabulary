@@ -148,7 +148,7 @@ for(i in 5){
         x <- rpois(5, lambda = 5)
         print(x)
 }
-## [1] 11  5  8  8  7
+## [1] 3 5 3 6 3
 
 # advised
 x <- vector(mode = "numeric", length = 5)
@@ -157,7 +157,7 @@ for(i in 5){
         x <- rpois(5, lambda = 5)
         print(x)
 }
-## [1] 5 8 9 5 4
+## [1] 7 3 6 5 2
 ```
 
 Another example in which we create an empty matrix with 5 rows and 5 columns.  The `for` loop then iterates over each column (note how *i* takes on the values 1 through the number of columns in the `my.mat` matrix) and takes a random draw of 5 values from a poisson distribution with mean *i* in column *i*:
@@ -170,11 +170,11 @@ for(i in 1:ncol(my.mat)){
 }
 my.mat
 ##      [,1] [,2] [,3] [,4] [,5]
-## [1,]    0    2    1    7    1
-## [2,]    1    2    2    3    9
-## [3,]    2    1    5    6    6
-## [4,]    2    1    5    2   10
-## [5,]    0    2    2    2    4
+## [1,]    0    2    7    5   13
+## [2,]    0    1    3    6    6
+## [3,]    1    2    2    3    4
+## [4,]    1    3    2    3    8
+## [5,]    1    3    3    1    6
 ```
 <small><a href="#">Go to top</a></small>
 
@@ -299,7 +299,7 @@ counter
 <a name="break"></a>
 
 # `break` Function to Exit a Loop
-The `break` function is used to exit a loop immediately, regardless of what iteration the loop may be on.  `break` functions are typically embedded in an `if` statement in which a condition is assessed, if TRUE `break` out of the loop, if FALSES continue on with the loop.  In a nested looping situation, where there is a loop inside another loop, this statement exits from the innermost loop that is being evaluated.
+The `break` function is used to exit a loop immediately, regardless of what iteration the loop may be on.  `break` functions are typically embedded in an `if` statement in which a condition is assessed, if TRUE `break` out of the loop, if FALSE continue on with the loop.  In a nested looping situation, where there is a loop inside another loop, this statement exits from the innermost loop that is being evaluated.
 
 
 ```r

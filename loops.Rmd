@@ -265,7 +265,7 @@ counter
 <a name="break"></a>
 
 # `break` Function to Exit a Loop
-The `break` function is used to exit a loop immediately, regardless of what iteration the loop may be on.  `break` functions are typically embedded in an `if` statement in which a condition is assessed, if TRUE `break` out of the loop, if FALSES continue on with the loop.  In a nested looping situation, where there is a loop inside another loop, this statement exits from the innermost loop that is being evaluated.
+The `break` function is used to exit a loop immediately, regardless of what iteration the loop may be on.  `break` functions are typically embedded in an `if` statement in which a condition is assessed, if TRUE `break` out of the loop, if FALSE continue on with the loop.  In a nested looping situation, where there is a loop inside another loop, this statement exits from the innermost loop that is being evaluated.
 
 ```{r, collapse=TRUE}
 x <- 1:5
