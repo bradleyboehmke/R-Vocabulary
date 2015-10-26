@@ -23,10 +23,22 @@ output:
 # Uniform numbers 
 <a name="uniform"></a>
 ```{r, eval=FALSE, echo=TRUE}
-runif(n)                          # generate n random numbers between the default values of 0 and 1
-runif(n, min = 0, max = 25)       # generate n random numbers between 0 and 25
-sample(0:25, n, replace = TRUE)   # generate n random numbers between 0 and 25 (with replacement)
-sample(0:25, n, replace = FALSE)  # generate n random numbers between 0 and 25 (without replacement)
+# generate n random numbers between the default values of 0 and 1
+runif(n)            
+
+# generate n random numbers between 0 and 25
+runif(n, min = 0, max = 25)       
+
+# generate n random numbers between 0 and 25 (with replacement)
+sample(0:25, n, replace = TRUE)   
+
+# generate n random numbers between 0 and 25 (without replacement)
+sample(0:25, n, replace = FALSE)  
+```
+
+For example, to generate 25 random numbers between the values 0 and 10:
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
+runif(25, min = 0, max = 10) 
 ```
 
 <br>
@@ -34,10 +46,31 @@ sample(0:25, n, replace = FALSE)  # generate n random numbers between 0 and 25 (
 # Normal Distribution Numbers 
 <a name="normal"></a> 
 ```{r, eval=FALSE, echo=TRUE}
-rnorm(n, mean = 0, sd = 1)    # generate n random numbers from a normal distribution with given mean & st. dev.
-pnorm(q, mean = 0, sd = 1)    # generate CDF probabilities for value(s) in vector q 
-qnorm(p, mean = 0, sd = 1)    # generate quantile for probabilities in vector p
-dnorm(x, mean = 0, sd = 1)    # generate density function probabilites for value(s) in vector x
+# generate n random numbers from a normal distribution with given mean & st. dev.
+rnorm(n, mean = 0, sd = 1)    
+
+# generate CDF probabilities for value(s) in vector q 
+pnorm(q, mean = 0, sd = 1)    
+
+# generate quantile for probabilities in vector p
+qnorm(p, mean = 0, sd = 1)    
+
+# generate density function probabilites for value(s) in vector x
+dnorm(x, mean = 0, sd = 1)    
+```
+
+For example, to generate 25 random numbers from a normal distribution with `mean = 100` and
+`standard deviation = 15`:
+```{r, echo=TRUE, collapse=TRUE}
+x <- rnorm(25, mean = 100, sd = 15) 
+x
+
+summary(x)
+```
+
+You can also pass a vector of values.  For instance, say you want to know the CDF probabilities for each value in a vector:
+```{r, echo=TRUE, collapse=TRUE}
+pnorm(x, mean = 100, sd = 15) 
 ```
 
 <br>
@@ -46,10 +79,18 @@ dnorm(x, mean = 0, sd = 1)    # generate density function probabilites for value
 <a name="binomial"></a> 
 This is conventionally interpreted as the number of ‘successes’ in `size = x` trials and `prob = p` probability of success:
 ```{r, eval=FALSE, echo=TRUE}
-rbinom(n, size = 100, prob = 0.5)  # generate a vector of length n displaying the number of successes from a trial size = 100 with a probabilty of success = 0.5
-pbinom(q, size = 100, prob = 0.5)  # generate CDF probabilities for value(s) in vector q 
-qbinom(p, size = 100, prob = 0.5)  # generate quantile for probabilities in vector p
-dbinom(x, size = 100, prob = 0.5)  # generate density function probabilites for value(s) in vector x
+# generate a vector of length n displaying the number of successes from a trial 
+# size = 100 with a probabilty of success = 0.5
+rbinom(n, size = 100, prob = 0.5)  
+
+# generate CDF probabilities for value(s) in vector q
+pbinom(q, size = 100, prob = 0.5) 
+
+# generate quantile for probabilities in vector p
+qbinom(p, size = 100, prob = 0.5) 
+
+# generate density function probabilites for value(s) in vector x
+dbinom(x, size = 100, prob = 0.5)  
 ```
 
 <br>
@@ -58,10 +99,21 @@ dbinom(x, size = 100, prob = 0.5)  # generate density function probabilites for 
 <a name="poisson"></a> 
 A discrete probability distribution that expresses the probability of a given number of events occuring in a fixed interval of time and/or space if these events occur with a known average rate and independently of the time since the last event.
 ```{r, eval=FALSE, echo=TRUE}
-rpois(n, lambda = 4)  # generate a vector of length n displaying the random number of events occuring when lambda (mean rate) equals 4.
-ppois(q, lambda = 4)  # generate CDF probabilities for value(s) in vector q when lambda (mean rate) equals 4.
-qpois(p, lambda = 4)  # generate quantile for probabilities in vector p when lambda (mean rate) equals 4.
-dpois(x, lambda = 4)  # generate density function probabilites for value(s) in vector x when lambda (mean rate) equals 4.
+# generate a vector of length n displaying the random number of events occuring 
+# when lambda (mean rate) equals 4.
+rpois(n, lambda = 4)  
+
+# generate CDF probabilities for value(s) in vector q when lambda (mean rate) 
+# equals 4.
+ppois(q, lambda = 4)  
+
+# generate quantile for probabilities in vector p when lambda (mean rate) 
+# equals 4.
+qpois(p, lambda = 4)  
+
+# generate density function probabilites for value(s) in vector x when lambda 
+# (mean rate) equals 4.
+dpois(x, lambda = 4)  
 ```
 
 <br>
@@ -70,10 +122,17 @@ dpois(x, lambda = 4)  # generate density function probabilites for value(s) in v
 <a name="exponential"></a> 
 A probability distribution that describes the time between events in a Poisson process.
 ```{r, eval=FALSE, echo=TRUE}
-rexp(n, rate = 1)   # generate a vector of length n with rate = 1
-pexp(q, rate = 1)   # generate CDF probabilities for value(s) in vector q when rate = 4.
-qexp(p, rate = 1)   # generate quantile for probabilities in vector p when rate = 4.
-dexp(x, rate = 1)   # generate density function probabilites for value(s) in vector x when rate = 4.
+# generate a vector of length n with rate = 1
+rexp(n, rate = 1)   
+
+# generate CDF probabilities for value(s) in vector q when rate = 4.
+pexp(q, rate = 1)   
+
+# generate quantile for probabilities in vector p when rate = 4.
+qexp(p, rate = 1)   
+
+# generate density function probabilites for value(s) in vector x when rate = 4.
+dexp(x, rate = 1)   
 ```
 
 <br>
@@ -82,10 +141,18 @@ dexp(x, rate = 1)   # generate density function probabilites for value(s) in vec
 <a name="gamma"></a> 
 A probability distribution that is related to the beta distribution and arises naturally in processes for which the waiting times between Poisson distributed events are relevant.
 ```{r, eval=FALSE, echo=TRUE}
-rgamma(n, shape = 1)   # generate a vector of length n with shape parameter = 1
-pgamma(q, shape = 1)   # generate CDF probabilities for value(s) in vector q when shape parameter = 1.
-qgamma(p, shape = 1)   # generate quantile for probabilities in vector p when shape parameter = 1.
-dgamma(x, shape = 1)   # generate density function probabilites for value(s) in vector x when shape parameter = 1.
+# generate a vector of length n with shape parameter = 1
+rgamma(n, shape = 1)   
+
+# generate CDF probabilities for value(s) in vector q when shape parameter = 1.
+pgamma(q, shape = 1)   
+
+# generate quantile for probabilities in vector p when shape parameter = 1.
+qgamma(p, shape = 1)   
+
+# generate density function probabilites for value(s) in vector x when shape 
+# parameter = 1.
+dgamma(x, shape = 1)   
 ```
 
 <br>

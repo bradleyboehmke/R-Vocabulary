@@ -71,22 +71,37 @@ img {
 <p><br></p>
 <div id="creating-integer-and-double-vectors" class="section level1">
 <h1>Creating Integer and Double Vectors</h1>
-<pre class="r"><code>dbl_var &lt;- c(1, 2.5, 4.5)    # create a string of double-precision values
-int_var &lt;- c(1L, 6L, 10L)    # placing an L after the values creates a string of integers</code></pre>
+<pre class="r"><code># create a string of double-precision values
+dbl_var &lt;- c(1, 2.5, 4.5)  
+dbl_var
+## [1] 1.0 2.5 4.5
+
+# placing an L after the values creates a string of integers
+int_var &lt;- c(1L, 6L, 10L)
+int_var
+## [1]  1  6 10</code></pre>
 <p><br></p>
 </div>
 <div id="converting-between-integer-and-double-values" class="section level1">
 <h1>Converting Between Integer and Double Values</h1>
 <p>By default, if you read in data that has no decimal points or you <a href="generating_sequence_numbers">create numeric values</a> using the <code>x &lt;- 1:10</code> method the numeric values will be coded as integer. If you want to change a double to an integer or vice versa:</p>
-<pre class="r"><code>as.double(int_var)     # converts integers to double-precision values
-as.numeric(int_var)    # identical to as.double()
+<pre class="r"><code># converts integers to double-precision values
+as.double(int_var)     
+## [1]  1  6 10
 
-as.integer()           # converts doubles to integers</code></pre>
+# identical to as.double()
+as.numeric(int_var)    
+## [1]  1  6 10
+
+# converts doubles to integers
+as.integer()           
+## integer(0)</code></pre>
 </div>
 <div id="checking-for-numeric-type" class="section level1">
 <h1>Checking for Numeric Type</h1>
 <p>To check whether a vector is made up of integer or double values:</p>
-<pre class="r"><code>typeof(x)     # identifies the vector type (double, integer, logical, or character)</code></pre>
+<pre class="r"><code># identifies the vector type (double, integer, logical, or character)
+typeof(x)     </code></pre>
 <p><br></p>
 <p><small><a href="#">Go to top</a></small></p>
 </div>

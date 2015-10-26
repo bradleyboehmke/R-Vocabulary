@@ -15,14 +15,14 @@ If you want to generate a sequence of random numbers and then be able to reprodu
 
 **Example:**
 
-```{r, eval=TRUE, echo=TRUE}
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
 set.seed(197)
 rnorm(n = 10, mean = 0, sd = 1)
 ```
 
 <br>
 
-```{r, eval=TRUE, echo=TRUE}
+```{r, eval=TRUE, echo=TRUE, collapse=}
 set.seed(197)
 rnorm(n = 10, mean = 0, sd = 1)
 ```

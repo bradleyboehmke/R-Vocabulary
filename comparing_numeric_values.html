@@ -95,10 +95,12 @@ y &lt;- c(4, 4, 9, 13)
 x == y
 ## [1] FALSE  TRUE  TRUE FALSE</code></pre>
 <p>Note that logical values <code>TRUE</code> and <code>FALSE</code> equate to 1 and 0 respectively. So if you want to identify the number of equal values in two vectors you can wrap the operation in the <code>sum()</code> function:</p>
-<pre class="r"><code>sum(x == y)    # How many pairwise equal values are in vectors x and y
+<pre class="r"><code># How many pairwise equal values are in vectors x and y
+sum(x == y)    
 ## [1] 2</code></pre>
 <p>If you need to identify the location of pairwise equalities in two vectors you can wrap the operation in the <code>which()</code> function:</p>
-<pre class="r"><code>which(x == y)    # Where are the pairwise equal values located in vectors x and y
+<pre class="r"><code># Where are the pairwise equal values located in vectors x and y
+which(x == y)    
 ## [1] 2 3</code></pre>
 <p><br></p>
 </div>

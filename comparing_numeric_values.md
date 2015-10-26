@@ -46,14 +46,16 @@ x == y
 Note that logical values `TRUE` and `FALSE` equate to 1 and 0 respectively.  So if you want to identify the number of equal values in two vectors you can wrap the operation in the `sum()` function:
 
 ```r
-sum(x == y)    # How many pairwise equal values are in vectors x and y
+# How many pairwise equal values are in vectors x and y
+sum(x == y)    
 ## [1] 2
 ```
 
 If you need to identify the location of pairwise equalities in two vectors you can wrap the operation in the `which()` function:
 
 ```r
-which(x == y)    # Where are the pairwise equal values located in vectors x and y
+# Where are the pairwise equal values located in vectors x and y
+which(x == y)    
 ## [1] 2 3
 ```
 

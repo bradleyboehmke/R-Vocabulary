@@ -11,8 +11,15 @@ The two most common numeric classes used in R are integer and double (for double
 # Creating Integer and Double Vectors
 
 ```r
-dbl_var <- c(1, 2.5, 4.5)    # create a string of double-precision values
-int_var <- c(1L, 6L, 10L)    # placing an L after the values creates a string of integers
+# create a string of double-precision values
+dbl_var <- c(1, 2.5, 4.5)  
+dbl_var
+## [1] 1.0 2.5 4.5
+
+# placing an L after the values creates a string of integers
+int_var <- c(1L, 6L, 10L)
+int_var
+## [1]  1  6 10
 ```
 
 <br>
@@ -22,10 +29,17 @@ By default, if you read in data that has no decimal points or you [create numeri
 
 
 ```r
-as.double(int_var)     # converts integers to double-precision values
-as.numeric(int_var)    # identical to as.double()
+# converts integers to double-precision values
+as.double(int_var)     
+## [1]  1  6 10
 
-as.integer()           # converts doubles to integers
+# identical to as.double()
+as.numeric(int_var)    
+## [1]  1  6 10
+
+# converts doubles to integers
+as.integer()           
+## integer(0)
 ```
 
 # Checking for Numeric Type
@@ -33,7 +47,8 @@ To check whether a vector is made up of integer or double values:
 
 
 ```r
-typeof(x)     # identifies the vector type (double, integer, logical, or character)
+# identifies the vector type (double, integer, logical, or character)
+typeof(x)     
 ```
 
 <br>

@@ -12,27 +12,38 @@ output:
 <br>
 
 # Specifing Numbers within a Sequence
-```{r, eval=FALSE, echo=TRUE}
-1:10         # create a vector of integers between 1 and 10
-c(1, 5, 10)  # create a vector consisting of 1, 5, and 10 
+```{r, echo=TRUE, collapse=TRUE}
+# create a vector of integers between 1 and 10
+1:10         
 
-x <- 1:10    # save the vector of integers between 1 and 10 as object x
+# create a vector consisting of 1, 5, and 10
+c(1, 5, 10)   
+
+# save the vector of integers between 1 and 10 as object x
+x <- 1:10 
+x
 ```
 
 <br>
 
 # Generating Regular Sequences 
 
-```{r, eval=TRUE, echo=TRUE}
-seq(1, 21, by = 2)             # generate a sequence of numbers from 1 to 21 by increments of 2
-seq(0, 21, length.out = 15)    # generate a sequence of numbers from 1 to 21 that has 15 equal incremented numbers
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
+# generate a sequence of numbers from 1 to 21 by increments of 2
+seq(1, 21, by = 2)             
+
+# generate a sequence of numbers from 1 to 21 that has 15 equal incremented numbers
+seq(0, 21, length.out = 15)    
 ```
 
 <br>
 
-```{r, eval=TRUE, echo=TRUE}
-rep(1:4, times = 2)   # replicates the values in x a specified number of times
-rep(1:4, each = 2)    # replicates the values in x in a collated fashion
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
+# replicates the values in x a specified number of times
+rep(1:4, times = 2)   
+
+# replicates the values in x in a collated fashion
+rep(1:4, each = 2)    
 ```
 
 <br>

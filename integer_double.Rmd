@@ -16,9 +16,14 @@ The two most common numeric classes used in R are integer and double (for double
 <br>
 
 # Creating Integer and Double Vectors
-```{r, eval=FALSE, echo=TRUE}
-dbl_var <- c(1, 2.5, 4.5)    # create a string of double-precision values
-int_var <- c(1L, 6L, 10L)    # placing an L after the values creates a string of integers
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
+# create a string of double-precision values
+dbl_var <- c(1, 2.5, 4.5)  
+dbl_var
+
+# placing an L after the values creates a string of integers
+int_var <- c(1L, 6L, 10L)
+int_var
 ```
 
 <br>
@@ -26,18 +31,23 @@ int_var <- c(1L, 6L, 10L)    # placing an L after the values creates a string of
 # Converting Between Integer and Double Values
 By default, if you read in data that has no decimal points or you [create numeric values](generating_sequence_numbers) using the `x <- 1:10` method the numeric values will be coded as integer.  If you want to change a double to an integer or vice versa: 
 
-```{r, eval=FALSE, echo=TRUE}
-as.double(int_var)     # converts integers to double-precision values
-as.numeric(int_var)    # identical to as.double()
+```{r, eval=TRUE, echo=TRUE, collapse=TRUE}
+# converts integers to double-precision values
+as.double(int_var)     
 
-as.integer()           # converts doubles to integers
+# identical to as.double()
+as.numeric(int_var)    
+
+# converts doubles to integers
+as.integer()           
 ```
 
 # Checking for Numeric Type
 To check whether a vector is made up of integer or double values:
 
 ```{r, eval=FALSE, echo=TRUE}
-typeof(x)     # identifies the vector type (double, integer, logical, or character)
+# identifies the vector type (double, integer, logical, or character)
+typeof(x)     
 ```
 
 <br>
