@@ -1,0 +1,65 @@
+---
+title: "Other Loop-like Functions"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+[R Vocab Topics](index) &#187; [Functions](functions_loops) &#187; Other useful "loop-like" functions
+
+
+In addition to the [apply family](apply_family) which provide vectorized functions that minimize your need to explicitly create loops, there are also a few commonly applied apply functions that have been further simplified.  These include the calculation of column and row sums, means, medians, standard deviations, variances, and summary quantiles across the entire data set.
+
+The most common apply functions that have been include calculating the sums and means of columns and rows.  For instance, to calculate the sum of columns across a data frame or matrix you could do the following:
+
+```{r, collapse=TRUE, cache=TRUE}
+apply(mtcars, 2, sum)
+```
+
+However, you can perform the same function with the shorter `colSums()` function and it performs faster:
+
+```{r, collapse=TRUE, cache=TRUE}
+colSums(mtcars)
+```
+
+To illustrate the speed difference we can compare the performance of using the `apply()` function versus the `colSums()` function on a matrix with 100 million values (10K x 10K).  You can see that the speed of `colSums()` is significantly faster.
+
+```{r, collapse=TRUE, cache=TRUE}
+# develop a 10,000 x 10,000 matrix
+mat = matrix(sample(1:10, size=100000000, replace=TRUE), nrow=10000)
+
+system.time(apply(mat, 2, sum))
+
+system.time(colSums(mat))
+```
+
+Base R provides the following simplified `apply` functions:
+
+* `colSums (x, na.rm = FALSE)`
+* `rowSums (x, na.rm = FALSE)`
+* `colMeans(x, na.rm = FALSE)`
+* `rowMeans(x, na.rm = FALSE)`
+
+In addition, the following functions are provided through the specified packages:
+
+* `miscTools` package (note that these functions will work on data frames)
+    * `colMedians()` 
+    * `rowMedians()` 
+* `miscTools` package (note that these functions only operate on matrices)
+    * `colMedians()` & `rowMedians()`
+    * `colSds()` & `rowSds()`
+    * `colVar()` & `rowVar()`
+    * `colRanges()` & `rowRanges()`
+    *  `colQuantiles()` & `rowQuantiles()`
+    * along with several additional summary statistic functions
+  
+In addition, the `summary()` function will provide relevant summary statistics over each column of data frames and matrices.  Note in the the example that follows that for the first four columns of the `iris` data set the summary statistics include min, med, mean, max, and 1st & 3rd quantiles.  Whereas the last column (`Species`) only provides the total count since this is a factor variable.
+
+```{r, collapse=TRUE, cache=TRUE}
+summary(iris)
+```
+
+
+
