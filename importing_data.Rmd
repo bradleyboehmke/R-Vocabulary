@@ -7,7 +7,7 @@ output:
     keep_md: true
 ---
 
-[R Vocab Topics](index) &#187; [Data inputs/outputs](data_inputs_outputs) &#187; Importing data
+[R Vocab Topics](index) &#187; [Importing, Scraping, and exporting data](data_inputs_outputs) &#187; Importing data
 
 The first step to any data analysis process is to *get* the data.  Data can come from many sources but two of the most common include text & Excel files.  This section covers how to import data into R by reading data from common text files and Excel spreadsheets.  In addition, I cover how to load data from saved R object files, which is the preferred method for holding data that has been processed in R.  In addition to the the commonly used base R functions to perform data importing, I will also cover functions from the popular [`readr`](https://cran.rstudio.com/web/packages/readr/), [`xlsx`](https://cran.rstudio.com/web/packages/xlsx/), and [`readxl`](https://cran.rstudio.com/web/packages/readxl/) packages.  
 
