@@ -7,16 +7,141 @@ output:
     keep_md: true
 ---
 
-[R Vocab Topics](index) &#187; [Importing, Scraping, and exporting data](data_inputs_outputs) &#187; Scraping data
 
-The rapid growth of the World Wide Web has significantly changed the way we share, collect, and publish data. Vast amount of information is being stored online, both in structured and unstructured forms.  Regarding certain questions or research topics, this has resulted in a new problem - no longer is the concern of data scarcity and inaccessibility but, rather, one of overcoming the tangled masses of online data.
+Rapid growth of the World Wide Web has significantly changed the way we share, collect, and publish data. Vast amount of information is being stored online, both in structured and unstructured forms.  Regarding certain questions or research topics, this has resulted in a new problem - no longer is the concern of data scarcity and inaccessibility but, rather, one of overcoming the tangled masses of online data.
 
-Collecting data from the web is not an easy process as there are many technologies used to distribute web content (i.e. [HTML](https://en.wikipedia.org/wiki/HTML), [XML](https://en.wikipedia.org/wiki/XML), [AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)), [JSON](https://en.wikipedia.org/wiki/JSON).  Therefore, dealing with more advanced web scraping requires familiarity with these technologies.  However, this section is meant to be an introduction to some of the fundamental tools required to perform basic web scraping.  The following topics will be discussed to a level to get you started in web scraping; however, to advance your knowledge I highly recommend getting copies [*XML and Web Technologies for Data Sciences with R*](http://www.amazon.com/XML-Web-Technologies-Data-Sciences/dp/1461478995) and [*Automated Data Collection with R*](http://www.amazon.com/Automated-Data-Collection-Practical-Scraping/dp/111883481X/ref=pd_sim_14_1?ie=UTF8&dpID=51Tm7FHxWBL&dpSrc=sims&preST=_AC_UL160_SR108%2C160_&refRID=1VJ1GQEY0VCPZW7VKANX).
+Collecting data from the web is not an easy process as there are many technologies used to distribute web content (i.e. [HTML](https://en.wikipedia.org/wiki/HTML), [XML](https://en.wikipedia.org/wiki/XML), [AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)), [JSON](https://en.wikipedia.org/wiki/JSON)).  Therefore, dealing with more advanced web scraping requires familiarity with these technologies.  However, this section is meant to be an introduction to some of the fundamental tools required to perform basic web scraping.  The following topics will be discussed at a level meant to get you started in web scraping; however, to advance your knowledge I highly recommend getting copies [*XML and Web Technologies for Data Sciences with R*](http://www.amazon.com/XML-Web-Technologies-Data-Sciences/dp/1461478995) and [*Automated Data Collection with R*](http://www.amazon.com/Automated-Data-Collection-Practical-Scraping/dp/111883481X/ref=pd_sim_14_1?ie=UTF8&dpID=51Tm7FHxWBL&dpSrc=sims&preST=_AC_UL160_SR108%2C160_&refRID=1VJ1GQEY0VCPZW7VKANX).
+
+* <a href="#online_spreadsheets">Importing tabular and Excel files stored online</a>
+* 
+
+<br>
+
+<a name="online_spreadsheets"></a>
+
+# Importing tabular and Excel files stored online
+The most basic form of getting data from online is to import tabular (i.e. .txt, .csv) or Excel files that are being hosted online. This is especially common for the many types of government data available online.  A quick perusal of [Data.gov](https://www.data.gov/) provides nearly 188,510 examples. In fact, we can provide our first example by downloading the Data.gov CSV file that lists all the federal agencies that supply data to Data.gov. 
+
+```{r, echo=FALSE}
+library(printr)
+```
+
+```{r, echo=TRUE, warning=FALSE, results='asis', cache = TRUE}
+# the url for the online CSV
+url <- "https://www.data.gov/media/federal-agency-participation.csv"
+
+# use read.csv to import
+data_gov <- read.csv(url, stringsAsFactors = FALSE)
+
+# for brevity I only display first 10 rows
+data_gov[1:6,c(1,3:4)]
+```
+
+
+Downloading Excel spreadsheets hosted online can be performed just as easily.  Recall that there is not a base R function for importing Excel data; however, several packages exist to handle this capability.  One package that works smoothly with pulling Excel data from urls is [`gdata`](https://cran.r-project.org/web/packages/gdata/index.html).  With `gdata` we can use `read.xls()` to download this [Fair Market Rents for Section 8 Housing](http://catalog.data.gov/dataset/fair-market-rents-for-the-section-8-housing-assistance-payments-program) Excel file from the given url. 
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+library(gdata)
+
+# the url for the online Excel file
+url <- "http://www.huduser.org/portal/datasets/fmr/fmr2015f/FY2015F_4050_Final.xls"
+
+# use read.xls to import
+rents <- read.xls(url)
+
+rents[1:6, 1:10]
+```
+
+Note that many of the arguments covered in the [Importing Data chapter]() (i.e. specifying sheets to read from, skipping lines) also apply to `read.xls()`. In addition, `gdata` provides some useful functions (`sheetCount()` and `sheetNames()`) for identifying if multiple sheets exist prior to downloading.
+
+Another common form of file storage is using zip files.  For instance, the [Bureau of Labor Statistics](http://www.bls.gov/home.htm) (BLS) stores their [public-use microdata](http://www.bls.gov/cex/pumdhome.htm) for the [Consumer Expenditure Survey](http://www.bls.gov/cex/home.htm) in .zip files.  We can use `download.file()` to download the file to your working directory and then work with this data as desired.
+
+```{r, collapse = TRUE, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+#library(downloader)
+
+url <- "http://www.bls.gov/cex/pumd/data/comma/diary14.zip"
+
+# download .zip file and unzip contents
+download.file(url, dest="dataset.zip", mode="wb") 
+unzip ("dataset.zip", exdir = "./")
+
+# assess the files contained in the .zip file which
+# unzips as a folder named "diary14"
+list.files("diary14")
+
+# alternatively, if we know the file we want prior to unzipping
+# we can extract the file without unzipping using unz():
+zip_data <- read.csv(unz("dataset.zip", "diary14/expd141.csv"))
+zip_data[1:5, 1:10]
+```
+
+The .zip archive file format is meant to compressed files and are typically used on files of significant size.  For instance, the Consumer Expenditure Survey data we downloaded in the previous example is over 10MB.  Obviously there may be times in which we want to get specific data in the .zip file to analyze but not always permanently store the entire .zip file contents. In these instances we can use the following [process](http://stackoverflow.com/questions/3053833/using-r-to-download-zipped-data-file-extract-and-import-data) proposed by [Dirk Eddelbuettel](https://twitter.com/eddelbuettel) to temporarily download the .zip file, extract the desired data, and then discard the .zip file.
+
+```{r, collapse = TRUE, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+# Create a temp. file name
+temp <- tempfile()
+
+# Use download.file() to fetch the file into the temp. file
+download.file("http://www.bls.gov/cex/pumd/data/comma/diary14.zip",temp)
+
+# Use unz() to extract the target file from temp. file
+zip_data2 <- read.csv(unz(temp, "diary14/expd141.csv"))
+
+# Remove the temp file via unlink()
+unlink(temp)
+
+zip_data2[1:5, 1:10]
+```
+
+One last common scenario I'll cover when importing spreadsheet data from online is when we identify multiple data sets that we'd like to download but are not centrally stored in a .zip format or the like. As a simple example lets look at the [average consumer price data](http://www.bls.gov/data/#prices) from the BLS. The BLS holds multiple data sets for different types of commodities within one [url](http://download.bls.gov/pub/time.series/ap/); however, there are separate links for each individual data set.  More complicated cases of this will have the links to tabular data sets scattered throughout a webpage[^auto1]. The [`XML`](https://cran.r-project.org/web/packages/XML/index.html) package provides the useful `getHTMLLinks()` function to identify these links.
+
+```{r, collapse = TRUE, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+library(XML)
+
+# url hosting multiple links to data sets
+url <- "http://download.bls.gov/pub/time.series/ap/"
+
+# identify the links available
+links <- getHTMLLinks(url)
+
+links
+```
+
+This allows us to assess which files exist that may be of interest.  In this case the links that we are primarily interested in are the ones that contain "data" in their name (links 4-7 listed above).  We can use the [`stringr`](https://cran.r-project.org/web/packages/stringr/index.html) package to extract these desired links which we will use to download the data.
+
+```{r, collapse = TRUE, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+library(stringr)
+
+# extract names for desired links and paste to url
+links_data <- links[str_detect(links, "data")]
+
+# paste url to data links to have full url for data sets
+# use str_sub and regexpr to paste links at appropriate 
+# starting point
+filenames <- paste0(url, str_sub(links_data, start = regexpr("ap.data", links_data)))
+
+filenames
+```
+
+We can now proceed to develop a simple `for` loop function to download each data set. We store the results in a list which contains 4 items, one item for each data set.  Each list item contains the url in which the data was extracted from and the dataframe containing the downloaded data.   
+
+```{r, collapse = TRUE, echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE}
+# create empty list to dump data into
+data_ls <- list()
+
+for(i in 1:length(filenames)){
+        url <- filenames[i]
+        data <- read.delim(url)
+        data_ls[[length(data_ls) + 1]] <- list(url=filenames[i], data=data)
+}
+
+str(data_ls)
+```
 
 
 
 
-
+[^auto1]: An example is provided in [*Automated Data Collection with R*](http://www.amazon.com/Automated-Data-Collection-Practical-Scraping/dp/111883481X/ref=pd_sim_14_1?ie=UTF8&dpID=51Tm7FHxWBL&dpSrc=sims&preST=_AC_UL160_SR108%2C160_&refRID=1VJ1GQEY0VCPZW7VKANX) in which they use a similar approach to extract desired CSV files scattered throughout the [Maryland State Board of Elections website](http://www.elections.state.md.us/elections/2012/election_data/index.html).
 
 
 
