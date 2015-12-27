@@ -424,7 +424,7 @@ head(tbls2_ls[[1]], 4)
 </div>
 <div id="scraping_tables_xml" class="section level3">
 <h3>Scraping HTML tables with XML</h3>
-<p>An alternative to <code>rvest</code> for table scraping is to use the <a href="https://cran.r-project.org/web/packages/XML/index.html"><code>XML</code></a> package. The XML package provides a convenient <code>readHTMLTable()</code> function to extract data from HTML tables in HTML documents. By passing the URL to <code>readHTMLTable()</code>, the data in each table is read and stored as a data frame. In a situation like our running provides where multiple tables exists, the data frames will be stored in a list similar to <code>rvest</code>’s <code>html_table</code>.</p>
+<p>An alternative to <code>rvest</code> for table scraping is to use the <a href="https://cran.r-project.org/web/packages/XML/index.html"><code>XML</code></a> package. The XML package provides a convenient <code>readHTMLTable()</code> function to extract data from HTML tables in HTML documents. By passing the URL to <code>readHTMLTable()</code>, the data in each table is read and stored as a data frame. In a situation like our running example where multiple tables exists, the data frames will be stored in a list similar to <code>rvest</code>’s <code>html_table</code>.</p>
 <pre class="r"><code>library(XML)
 
 url &lt;- &quot;http://www.bls.gov/web/empsit/cesbmart.htm&quot;
@@ -437,7 +437,7 @@ typeof(tbls_xml)
 
 length(tbls_xml)
 ## [1] 15</code></pre>
-<p><code>tbls_xml</code> captures the same 15 <code>&lt;table&gt;</code> nodes that <code>html_nodes</code> captured. To capture the same tables of interest we previously discussed (<em>Table 2. Nonfarm employment…</em> and <em>Table 3. Net birth/death…</em>) we can use a couple approaches. First, we can assess <code>str(tbls_xml)</code> to identify the tables of interest and perform normal <a href="#lists_subset">list subsetting</a>.</p>
+<p>You can see that <code>tbls_xml</code> captures the same 15 <code>&lt;table&gt;</code> nodes that <code>html_nodes</code> captured. To capture the same tables of interest we previously discussed (<em>Table 2. Nonfarm employment…</em> and <em>Table 3. Net birth/death…</em>) we can use a couple approaches. First, we can assess <code>str(tbls_xml)</code> to identify the tables of interest and perform normal <a href="#lists_subset">list subsetting</a>. In our example list items 3 and 4 correspond with our tables of interest.</p>
 <pre class="r"><code>head(tbls_xml[[3]])
 ##          V1                        V2      V3      V4  V5   V6
 ## 1 00-000000             Total nonfarm 137,214 137,147  67  (1)
@@ -457,7 +457,8 @@ head(tbls_xml[[4]], 3)
 ## 2             108
 ## 3              17</code></pre>
 <p>Second, we can use the <code>which</code> argument in <code>readHTMLTable()</code> which restricts the data importing to only those tables specified numerically.</p>
-<pre class="r"><code>emp_ls &lt;- readHTMLTable(url, which = c(3,4))
+<pre class="r"><code># only parse the 3rd and 4th tables
+emp_ls &lt;- readHTMLTable(url, which = c(3, 4))
 
 str(emp_ls)
 ## List of 2
@@ -481,6 +482,96 @@ str(emp_ls)
 ##   ..$ Nov               : Factor w/ 8 levels &quot;-10&quot;,&quot;-15&quot;,&quot;-22&quot;,..: 4 1 7 5 8 8 6 6 3 4 ...
 ##   ..$ Dec               : Factor w/ 8 levels &quot;-10&quot;,&quot;-21&quot;,&quot;-3&quot;,..: 4 2 4 7 4 6 1 3 7 5 ...
 ##   ..$ CumulativeTotal   : Factor w/ 10 levels &quot;107&quot;,&quot;108&quot;,&quot;12&quot;,..: 3 2 6 4 5 10 7 1 8 9 ...</code></pre>
+<p>The third option involves explicitly naming the tables to parse. This process uses the <a href="#scraping_specific_nodes">element selector process described in the previous section</a> to call the table by name. We use <code>getNodeSet()</code> to select the specified tables of interest. However, a key difference here is rather than copying the table ID names you want to copy the XPath. You can do this with the following: After you’ve highlighted the table element of interest with the element selector, right click the highlighted element in the developer tools window and select Copy XPath. From here we just use <code>readHTMLTable()</code> to convert to data frames and we have our desired tables.</p>
+<pre class="r"><code>library(RCurl)
+library(XML)
+
+# parse url
+url_parsed &lt;- htmlParse(getURL(url), asText = TRUE)
+
+# select table nodes of interest
+tableNodes &lt;- getNodeSet(url_parsed, c('//*[@id=&quot;Table2&quot;]', '//*[@id=&quot;Table3&quot;]'))
+
+# convert HTML tables to data frames
+bls_table2 &lt;- readHTMLTable(tableNodes[[1]])
+bls_table3 &lt;- readHTMLTable(tableNodes[[2]])
+
+head(bls_table2)
+##          V1                        V2      V3      V4  V5   V6
+## 1 00-000000             Total nonfarm 137,214 137,147  67  (1)
+## 2 05-000000             Total private 114,989 114,884 105  0.1
+## 3 06-000000           Goods-producing  18,675  18,558 117  0.6
+## 4 07-000000         Service-providing 118,539 118,589 -50  (1)
+## 5 08-000000 Private service-providing  96,314  96,326 -12  (1)
+## 6 10-000000        Mining and logging     868     884 -16 -1.8
+
+head(bls_table3, 3)
+##   CES Industry Code CES Industry Title Apr May Jun Jul Aug Sep Oct Nov Dec
+## 1         10-000000 Mining and logging   2   2   2   2   1   1   1   1   0
+## 2         20-000000       Construction  35  37  24  12  12   7  12 -10 -21
+## 3         30-000000      Manufacturing   0   6   4  -3   4   1   3   2   0
+##   CumulativeTotal
+## 1              12
+## 2             108
+## 3              17</code></pre>
+<p>A few benefits of <code>XML</code>’s <code>readHTMLTable</code> that are routinely handy include:</p>
+<ul>
+<li>We can specify names for the column headings</li>
+<li>We can specify the classes for each column</li>
+<li>We can specify rows to skip</li>
+</ul>
+<p>For instance, if you look at <code>bls_table2</code> above notice that because of the split column headings on <em>Table 2. Nonfarm employment…</em> <code>readHTMLTable</code> stripped and replaced the headings with generic names because R does not know which variable names should align with each column. We can correct for this with the following:</p>
+<pre class="r"><code>library(XML) 
+
+bls_table2 &lt;- readHTMLTable(tableNodes[[1]], 
+                            header = c(&quot;CES_Code&quot;, &quot;Ind_Title&quot;, &quot;Benchmark&quot;,
+                            &quot;Estimate&quot;, &quot;Amt_Diff&quot;, &quot;Pct_Diff&quot;))
+
+head(bls_table2)
+##    CES_Code                 Ind_Title Benchmark Estimate Amt_Diff Pct_Diff
+## 1 00-000000             Total nonfarm   137,214  137,147       67      (1)
+## 2 05-000000             Total private   114,989  114,884      105      0.1
+## 3 06-000000           Goods-producing    18,675   18,558      117      0.6
+## 4 07-000000         Service-providing   118,539  118,589      -50      (1)
+## 5 08-000000 Private service-providing    96,314   96,326      -12      (1)
+## 6 10-000000        Mining and logging       868      884      -16     -1.8</code></pre>
+<p>Also, for <code>bls_table3</code> note that the net birth/death values parsed have been converted to factor levels. We can use the <code>colClasses</code> argument to correct this.</p>
+<pre class="r"><code>library(XML)
+
+str(bls_table3)
+## 'data.frame':    11 obs. of  12 variables:
+##  $ CES Industry Code : Factor w/ 11 levels &quot;10-000000&quot;,&quot;20-000000&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ CES Industry Title: Factor w/ 11 levels &quot;263&quot;,&quot;Construction&quot;,..: 8 2 7 11 5 4 10 3 6 9 ...
+##  $ Apr               : Factor w/ 10 levels &quot;0&quot;,&quot;12&quot;,&quot;2&quot;,&quot;204&quot;,..: 3 7 1 5 1 8 9 6 10 2 ...
+##  $ May               : Factor w/ 10 levels &quot;129&quot;,&quot;13&quot;,&quot;2&quot;,..: 3 6 8 5 7 9 4 2 10 8 ...
+##  $ Jun               : Factor w/ 10 levels &quot;-14&quot;,&quot;0&quot;,&quot;12&quot;,..: 5 6 7 3 2 7 8 1 10 9 ...
+##  $ Jul               : Factor w/ 10 levels &quot;-1&quot;,&quot;-2&quot;,&quot;-3&quot;,..: 6 5 3 10 1 7 8 10 9 2 ...
+##  $ Aug               : Factor w/ 9 levels &quot;-19&quot;,&quot;1&quot;,&quot;12&quot;,..: 2 3 9 4 8 9 5 6 7 8 ...
+##  $ Sep               : Factor w/ 9 levels &quot;-1&quot;,&quot;-12&quot;,&quot;-2&quot;,..: 5 8 5 9 1 1 2 6 4 3 ...
+##  $ Oct               : Factor w/ 10 levels &quot;-17&quot;,&quot;1&quot;,&quot;12&quot;,..: 2 3 6 5 9 4 10 7 1 8 ...
+##  $ Nov               : Factor w/ 8 levels &quot;-10&quot;,&quot;-15&quot;,&quot;-22&quot;,..: 4 1 7 5 8 8 6 6 3 4 ...
+##  $ Dec               : Factor w/ 8 levels &quot;-10&quot;,&quot;-21&quot;,&quot;-3&quot;,..: 4 2 4 7 4 6 1 3 7 5 ...
+##  $ CumulativeTotal   : Factor w/ 10 levels &quot;107&quot;,&quot;108&quot;,&quot;12&quot;,..: 3 2 6 4 5 10 7 1 8 9 ...
+
+bls_table3 &lt;- readHTMLTable(tableNodes[[2]], 
+                            colClasses = c(&quot;character&quot;,&quot;character&quot;, 
+                                           rep(&quot;integer&quot;, 10)))
+
+str(bls_table3)
+## 'data.frame':    11 obs. of  12 variables:
+##  $ CES Industry Code : Factor w/ 11 levels &quot;10-000000&quot;,&quot;20-000000&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ CES Industry Title: Factor w/ 11 levels &quot;263&quot;,&quot;Construction&quot;,..: 8 2 7 11 5 4 10 3 6 9 ...
+##  $ Apr               : int  2 35 0 21 0 8 81 22 82 12 ...
+##  $ May               : int  2 37 6 24 5 8 22 13 81 6 ...
+##  $ Jun               : int  2 24 4 12 0 4 5 -14 86 6 ...
+##  $ Jul               : int  2 12 -3 7 -1 3 35 7 62 -2 ...
+##  $ Aug               : int  1 12 4 14 3 4 19 21 23 3 ...
+##  $ Sep               : int  1 7 1 9 -1 -1 -12 12 -33 -2 ...
+##  $ Oct               : int  1 12 3 28 6 16 76 35 -17 4 ...
+##  $ Nov               : int  1 -10 2 10 3 3 14 14 -22 1 ...
+##  $ Dec               : int  0 -21 0 4 0 10 -10 -3 4 1 ...
+##  $ CumulativeTotal   : int  12 108 17 129 15 55 230 107 266 29 ...</code></pre>
+<p>Between <code>rvest</code> and <code>XML</code>, scraping HTML tables is relatively easy once you get fluent with the syntax and the available options. This section covers just the basics of both these packages to get you moving forward with scraping tables. In the next section we move on to working with application program interfaces (APIs) to get data from the web.</p>
 </div>
 </div>
 <div class="footnotes">

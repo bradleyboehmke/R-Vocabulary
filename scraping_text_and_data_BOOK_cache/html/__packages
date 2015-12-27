@@ -4,3 +4,5 @@ rvest
 magrittr
 stringr
 XML
+bitops
+RCurl
