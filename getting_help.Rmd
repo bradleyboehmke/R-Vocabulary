@@ -7,12 +7,7 @@ output:
     keep_md: true
 ---
 
-<style>
-#div {
-#    text-align: justify;
-#    text-justify: inter-word;
-#}
-</style>
+[R Vocab Topics](http://bradleyboehmke.github.io/tutorials/) &#187; [Basics](http://bradleyboehmke.github.io/tutorials/basics/) &#187; Getting help
 
 <br>
 <br>
