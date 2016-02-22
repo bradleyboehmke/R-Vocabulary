@@ -1,0 +1,78 @@
+---
+title: "Simplifying Code"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+Intro to pipe operator...how it relates to DRY -- simplifies and eliminates repeating of code
+
+The magrittr (to be pronounced with a sophisticated french accent) is a package with two aims: to decrease development time and to improve readability and maintainability of code.
+
+## Pipe (%>%) Operator
+The principal function provided by the `magrittr` package is `%>%`, or what's called the "pipe" operator. This operator will forward a value, or the result of an expression, into the next function call/expression. For instance a function to filter data can be written as:
+
+C> `filter(data, variable == numeric_value)`
+
+C> or
+
+C> `data %>% filter(variable == numeric_value)`
+
+Both functions complete the same task and the benefit of using `%>%` may not be immediately evident; however, when you desire to perform multiple functions its advantage becomes obvious. For instance, if we want to filter some data, summarize it, and then order the summarized results we could write it out three different ways:
+
+____Nested Option____:
+
+{linenos=off}
+```{r, echo=TRUE, collapse=TRUE}
+library(magrittr)
+library(dplyr)
+
+arrange(
+        summarize(
+                group_by(
+                        filter(mtcars, carb > 1),
+                        cyl
+                        ),
+                Avg_mpg = mean(mpg)
+            ),
+        desc(Avg_mpg)
+    )
+```
+
+____Multiple Object Option____:
+
+{linenos=off}
+```{r, echo=TRUE, collapse=TRUE}
+a <- filter(mtcars, carb > 1)
+b <- group_by(a, cyl)
+c <- summarise(b, Avg_mpg = mean(mpg))
+d <- arrange(c, desc(Avg_mpg))
+print(d)
+```
+
+ ____%>% Option____:
+
+{linenos=off}
+```{r, echo=TRUE, collapse=TRUE}
+mtcars %>%
+        filter(carb > 1) %>%
+        group_by(cyl) %>%
+        summarise(Avg_mpg = mean(mpg)) %>%
+        arrange(desc(Avg_mpg))
+```
+
+As your function tasks get longer the `%>%` operator becomes more efficient *and* makes your code more legible. 
+
+
+## Additional Functions
+In addition to the `%>%` operator, `magrittr` provides several additional functions which make operations such as addition, multiplication, logical operators, re-naming, etc more pleasant when composing chains using the %>% operator.
+
+
+## Additional Pipe Operators
+
+
+
+
+
