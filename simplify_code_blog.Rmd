@@ -1,5 +1,5 @@
 ---
-title: "Simplifying Code"
+title: "Simplify Your Code with %>%"
 author: NULL
 date: NULL
 output:
@@ -14,17 +14,19 @@ The [`magrittr`](https://cran.r-project.org/web/packages/magrittr/index.html) pa
 ## Pipe (%>%) Operator
 The principal function provided by the `magrittr` package is `%>%`, or what's called the "pipe" operator. This operator will forward a value, or the result of an expression, into the next function call/expression. For instance a function to filter data can be written as:
 
-C> `filter(data, variable == numeric_value)`
+<center>
+`filter(data, variable == numeric_value)`
 
-C> or
+or
 
-C> `data %>% filter(variable == numeric_value)`
+`data %>% filter(variable == numeric_value)`
+</center>
+<br>
 
 Both functions complete the same task and the benefit of using `%>%` may not be immediately evident; however, when you desire to perform multiple functions its advantage becomes obvious. For instance, if we want to filter some data, group it by categories, summarize it, and then order the summarized results we could write it out three different ways. Don't worry, you'll learn how to operate these specific functions in the next section.
 
-____Nested Option____:
+<u>Nested Option</u>:
 
-{linenos=off}
 ```{r, echo=TRUE, collapse=TRUE, message=FALSE}
 library(magrittr)
 library(dplyr)
@@ -43,9 +45,8 @@ arrange(
 
 This first option is considered a "nested" option such that functions are nested within one another. Historically, this has been the traditional way of integrating code; however, it becomes extremely difficult to read what exactly the code is doing and it also becomes easier to make mistakes when making updates to your code. Although not in violation of the DRY principle, it definitely violates the basic principle of readability and clarity, which makes communication of your analysis more difficult.  To make things more readable, people often move to the following approach...
 
-____Multiple Object Option____:
+<u>Multiple Object Option</u>:
 
-{linenos=off}
 ```{r, echo=TRUE, collapse=TRUE}
 a <- filter(mtcars, carb > 1)
 b <- group_by(a, cyl)
@@ -56,9 +57,8 @@ print(d)
 
 This second option helps in making the data wrangling steps more explicit and obvious but definitely violates the DRY principle. By sequencing multiple functions in this way you are likely saving multiple outputs that are not very informative to you or others; rather, the only reason you save them is to insert them into the next function to eventually get the final output you desire. This inevitably creates unnecessary copies and wrecks havoc on properly managing your objects...basically it results in a global environment charlie foxtrot! To provide the same readability (or even better), we can use `%>%` to string these arguments together without unnecessary object creation...
 
- ____%>% Option____:
+<u>%>% Option</u>:
 
-{linenos=off}
 ```{r, echo=TRUE, collapse=TRUE}
 mtcars %>%
         filter(carb > 1) %>%
@@ -71,7 +71,7 @@ This final option which integrates `%>%` operators makes for more efficient *and
 
 And since R is a functional programming language, meaning that everything you do is basically built on functions, you can use the pipe operator to feed into just about any argument call. For example, we can pipe into a linear regression function and then get the summary of the regression parameters. Note in this case I insert "`data = .`" into the `lm()` function. When using the `%>%` operator the default is the argument that you are forwarding will go in as the **first** argument of the function that follows the `%>%`.  However, in some functions the argument you are forwarding does not go into the default first position. In these cases, you place "." to signal which argument you want the forwarded expression to go to.
 
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE}
 mtcars %>%
         filter(carb > 1) %>%
@@ -81,7 +81,7 @@ mtcars %>%
 
 You can also use `%>%` to feed into plots:
 
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE}
 library(ggplot2)
 
@@ -90,12 +90,12 @@ mtcars %>%
         qplot(x = wt, y = mpg, data = .)
 ```
 
-You will also find that the `%>%` operator is now being built into packages to make programming much easier.  For instance, in the chapters that follow where I illustrate how to reshape and transform your data with the `dplyr` and `tidyr` packages, you will see that the `%>%` operator is already built into these packages. It is also built into the `ggvis` and `dygraphs` packages (visualization packages), the `httr` package (which we covered the data scraping chapter), and a growing number of newer packages.
+You will also find that the `%>%` operator is now being built into packages to make programming much easier.  For instance, in the tutorials where I illustrate how to [reshape](http://bradleyboehmke.github.io/tutorials/tidyr) and [transform](http://bradleyboehmke.github.io/tutorials/dplyr) your data with the `dplyr` and `tidyr` packages, you will see that the `%>%` operator is already built into these packages. It is also built into the `ggvis` and `dygraphs` packages (visualization packages), the `httr` package (which I covered in the [data scraping tutorials](http://bradleyboehmke.github.io/tutorials/scraping_data)), and a growing number of newer packages.
 
 ## Additional Functions
-In addition to the `%>%` operator, `magrittr` provides several additional functions which make operations such as addition, multiplication, logical operators, re-naming, etc more pleasant when composing chains using the `%>%` operator. Some examples follow but you can see the current list of the available aliased functions by typing `?magrittr::add` in your console.
+In addition to the `%>%` operator, `magrittr` provides several additional functions which make operations such as addition, multiplication, logical operators, re-naming, etc. more pleasant when composing chains using the `%>%` operator. Some examples follow but you can see the current list of the available aliased functions by typing `?magrittr::add` in your console.
 
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE}
 # subset with extract
 mtcars %>%
@@ -122,7 +122,6 @@ mtcars %>%
 ## Additional Pipe Operators
 `magrittr` also offers some alternative pipe operators. Some functions, such as plotting functions, will cause the string of piped arguments to terminate.  The tee (`%T>%`) operator allows you to continue piping functions that normally cause termination.
 
-{linenos=off}
 ```{r, echo=TRUE, collapse=TRUE}
 # normal piping terminates with the plot() function resulting in
 # NULL results for the summary() function
@@ -132,7 +131,7 @@ mtcars %>%
         plot() %>%
         summary()
 ```
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE}
 # inserting %T>% allows you to plot and perform the functions that 
 # follow the plotting function
@@ -145,7 +144,7 @@ mtcars %>%
 
 The compound assignment `%<>%` operator is used to update a value by first piping it into one or more expressions, and then assigning the result. For instance, let's say you want to transform the `mpg` variable in the `mtcars` data frame to a square root measurement. Using `%<>%` will perform the functions to the right of `%<>%` and save the changes these functions perform to the variable or data frame called to the left of `%<>%`.
 
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE}
 # note that mpg is in its typical measurement
 head(mtcars)
@@ -158,7 +157,7 @@ head(mtcars)
 
 Some functions (e.g. lm, aggregate, cor) have a data argument, which allows the direct use of names inside the data as part of the call. The exposition (`%$%`) operator is useful when you want to pipe a dataframe, which may contain many columns, into a function that is only applied to some of the columns.  For example, the correlation (`cor`) function only requires an `x` and `y` argument so if you pipe the `mtcars` data into the `cor` function using `%>%` you will get an error because `cor` doesn't know how to handle `mtcars`. However, using `%$%` allows you to say "take this dataframe and then perform `cor()` on these specified columns within `mtcars`."
 
-{linenos=off}
+
 ```{r, echo=TRUE, collapse=TRUE, error=TRUE}
 # regular piping results in an error
 mtcars %>%
@@ -181,12 +180,4 @@ Some additional resources regarding `magrittr` and the pipe operators you may fi
 - [`magrittr` questions](http://stackoverflow.com/questions/tagged/magrittr) on Stack Overflow
 - The [`ensurer`](https://cran.r-project.org/web/packages/ensurer/vignettes/ensurer.html) package, also written by [Stefan Milton Bache](https://twitter.com/stefanbache), provides a useful way of verifying and validating data outputs in a sequence of pipe operators.
 
-
-
-
-
-
-
-
-
-
+<small><a href="#">Go to top</a></small>
