@@ -1,0 +1,897 @@
+---
+title: "Working with Different Types of Data in R"
+author: NULL
+date: NULL
+output: word_document
+---
+
+> *Wait, there are different types of data?*
+
+R is a flexible language that allows you to work with many different *forms* of data. This includes numeric, character, categorical, dates, and logical. Technically, R classifies all the different types of data into five classes:
+
+- integer
+- numeric
+- character
+- complex
+- logical
+
+Modern day analysis typically deals with every class so its important to gain fluency in dealing with these data forms.  This section covers the fundamentals of handling the different data classes.  First I cover the basics of dealing with [numbers](#numbers) so you understand the different classes of numbers, how to generate number sequences, compare numeric values, and round. I then provide an introduction to working with [characters](#characters) to get you comfortable with character string manipulation and set operations.  This prepares you to then learn about [regular expressions](#regex) which deals with search patterns for character classes. Next I introduce [factors](#factors), also referred to as categorical variables, and how to create, convert, order, and re-level this data class. Lastly, I cover how to manage [dates](#dates) as this can be a persnickety type of variable when performing data analysis.  Throughout several of these chapters you'll also gain an understanding of the `TRUE`/`FALSE` logical variables.
+
+Together, this will give you a solid foundation for dealing with the basic data classes in R so that when you start to learn how to manage the different data structures, which combines these data classes into multiple dimensions, you will have a strong base from which to start.
+
+# Dealing with Numbers {#numbers}
+In this chapter you will learn the basics of working with numbers in R.  This includes understanding how to manage the [numeric type (integer vs. double)](#integer_vs_double), the different ways of generating [non-random](#generating_sequence_numbers) and [random](#generating_random_numbers) numbers, how to [set seed values](#setting_seed) for reproducible random number generation, and the different ways to [compare](#compare_numeric_values) and [round](#round_numbers) numeric values.
+
+
+## Integer vs. Double {#integer_vs_double}
+The two most common numeric classes used in R are integer and double (for double precision floating point numbers). R automatically converts between these two classes when needed for mathematical purposes. As a result, it's feasible to use R and perform analyses for years without specifying these differences. To check whether a pre-existing vector is made up of integer or double values you can use `typeof(x)` which will tell you if the vector is a double, integer, logical, or character type.
+
+
+### Creating Integer and Double Vectors
+By default, when you create a numeric vector using the `c()` function it will produce a vector of double precision numeric values.  To create a vector of integers using `c()` you must specify explicity by placing an `L` directly after each number.
+
+
+```{r}
+# create a string of double-precision values
+dbl_var <- c(1, 2.5, 4.5)  
+dbl_var
+
+
+# placing an L after the values creates a string of integers
+int_var <- c(1L, 6L, 10L)
+int_var
+```
+
+### Converting Between Integer and Double Values
+By default, if you read in data that has no decimal points or you [create numeric values](#generating_sequence_numbers) using the `x <- 1:10` method the numeric values will be coded as integer.  If you want to change a double to an integer or vice versa you can specify one of the following: 
+
+
+```{r}
+# converts integers to double-precision values
+as.double(int_var)     
+
+# identical to as.double()
+as.numeric(int_var)    
+
+# converts doubles to integers
+as.integer(dbl_var)           
+```
+
+
+## Generating sequence of non-random numbers {#generating_sequence_numbers}
+There are a few R operators and functions that are especially useful for creating vectors of non-random numbers.  These functions provide multiple ways for generating sequences of numbers.
+
+### Specifing Numbers within a Sequence
+To explicitly specify numbers in a sequence you can use the colon `:` operator to specify all integers between two specified numbers or the combine `c()` function to explicity specify all numbers in the sequence.
+
+
+```{r}
+# create a vector of integers between 1 and 10
+1:10         
+
+# create a vector consisting of 1, 5, and 10
+c(1, 5, 10)   
+
+# save the vector of integers between 1 and 10 as object x
+x <- 1:10 
+x
+```
+
+### Generating Regular Sequences {#seq}
+A generalization of `:` is the `seq()` function, which generates a sequence of numbers with a specified arithmetic progression.
+
+
+```{r}
+# generate a sequence of numbers from 1 to 21 by increments of 2
+seq(from = 1, to = 21, by = 2)
+
+# generate a sequence of numbers from 1 to 21 that has 15 equal 
+# incremented numbers
+seq(0, 21, length.out = 15)    
+```
+
+The `rep()` function allows us to conveniently repeat specified constants into long vectors. This function allows for collated and non-collated repetitions.
+
+
+```{r}
+# replicates the values in x a specified number of times
+rep(1:4, times = 2)   
+
+# replicates the values in x in a collated fashion
+rep(1:4, each = 2)    
+```
+
+## Generating sequence of random numbers {#generating_random_numbers}
+Simulation is a common practice in data analysis. Sometimes your analysis requires the implementation of a statistical procedure that requires random number generation or sampling (i.e. Monte Carlo simulation, bootstrap sampling, etc).  R comes with a set of pseudo-random number generators that allow you to simulate the most common probability distributions such as Uniform, Normal, Binomial, Poisson, Exponential and Gamma. 
+
+### Uniform numbers 
+To generate random numbers from a uniform distribution you can use the `runif()` function.  Alternatively, you can use `sample()` to take a random sample using with or without replacements.
+
+
+```{r, eval=FALSE}
+# generate n random numbers between the default values of 0 and 1
+runif(n)            
+
+# generate n random numbers between 0 and 25
+runif(n, min = 0, max = 25)       
+
+# generate n random numbers between 0 and 25 (with replacement)
+sample(0:25, n, replace = TRUE)   
+
+# generate n random numbers between 0 and 25 (without replacement)
+sample(0:25, n, replace = FALSE)  
+```
+
+For example, to generate 25 random numbers between the values 0 and 10:
+
+
+```{r}
+runif(25, min = 0, max = 10) 
+```
+
+For each non-uniform probability distribution there are four primary functions available to generate random numbers, density (aka probability mass function), cumulative density, and quantiles.  The prefixes for these functions are:
+
+- `r`: random number generation
+- `d`: density or probability mass function
+- `p`: cumulative distribution
+- `q`: quantiles
+
+### Normal Distribution Numbers 
+The normal (or Gaussian) distribution is the most common and well know distribution.  Within R, the normal distribution functions are written as <prefix>`norm()`.
+
+
+```{r, eval=FALSE}
+# generate n random numbers from a normal distribution with given 
+# mean and standard deviation
+rnorm(n, mean = 0, sd = 1)    
+
+# generate CDF probabilities for value(s) in vector q 
+pnorm(q, mean = 0, sd = 1)    
+
+# generate quantile for probabilities in vector p
+qnorm(p, mean = 0, sd = 1)    
+
+# generate density function probabilites for value(s) in vector x
+dnorm(x, mean = 0, sd = 1)    
+```
+
+For example, to generate 25 random numbers from a normal distribution with `mean = 100` and `standard deviation = 15`:
+
+
+```{r}
+x <- rnorm(25, mean = 100, sd = 15) 
+x
+
+summary(x)
+```
+
+You can also pass a vector of values.  For instance, say you want to know the CDF probabilities for each value in the vector `x` created above:
+
+
+```{r}
+pnorm(x, mean = 100, sd = 15) 
+```
+
+### Binomial Distribution Numbers 
+This is conventionally interpreted as the number of successes in `size = x` trials and with `prob = p` probability of success:
+
+
+```{r, eval=FALSE}
+# generate a vector of length n displaying the number of successes 
+# from a trial size = 100 with a probabilty of success = 0.5
+rbinom(n, size = 100, prob = 0.5)  
+
+# generate CDF probabilities for value(s) in vector q
+pbinom(q, size = 100, prob = 0.5) 
+
+# generate quantile for probabilities in vector p
+qbinom(p, size = 100, prob = 0.5) 
+
+# generate density function probabilites for value(s) in vector x
+dbinom(x, size = 100, prob = 0.5)  
+```
+
+### Poisson Distribution Numbers 
+The Poisson distribution is a discrete probability distribution that expresses the probability of a given number of events occuring in a fixed interval of time and/or space if these events occur with a known average rate and independently of the time since the last event.
+
+
+```{r, eval=FALSE}
+# generate a vector of length n displaying the random number of 
+# events occuring when lambda (mean rate) equals 4.
+rpois(n, lambda = 4)  
+
+# generate CDF probabilities for value(s) in vector q when lambda 
+# (mean rate) equals 4.
+ppois(q, lambda = 4)  
+
+# generate quantile for probabilities in vector p when lambda 
+# (mean rate) equals 4.
+qpois(p, lambda = 4)  
+
+# generate density function probabilites for value(s) in vector x 
+# when lambda (mean rate) equals 4.
+dpois(x, lambda = 4)  
+```
+
+### Exponential Distribution Numbers 
+The Exponential probability distribution describes the time between events in a Poisson process.
+
+
+```{r, eval=FALSE}
+# generate a vector of length n with rate = 1
+rexp(n, rate = 1)   
+
+# generate CDF probabilities for value(s) in vector q when rate = 4.
+pexp(q, rate = 1)   
+
+# generate quantile for probabilities in vector p when rate = 4.
+qexp(p, rate = 1)   
+
+# generate density function probabilites for value(s) in vector x 
+# when rate = 4.
+dexp(x, rate = 1)   
+```
+
+### Gamma Distribution Numbers 
+The Gamma probability distribution is related to the Beta distribution and arises naturally in processes for which the waiting times between Poisson distributed events are relevant.
+
+
+```{r, eval=FALSE}
+# generate a vector of length n with shape parameter = 1
+rgamma(n, shape = 1)   
+
+# generate CDF probabilities for value(s) in vector q when shape 
+# parameter = 1.
+pgamma(q, shape = 1)   
+
+# generate quantile for probabilities in vector p when shape 
+# parameter = 1.
+qgamma(p, shape = 1)   
+
+# generate density function probabilites for value(s) in vector x 
+# when shape 
+# parameter = 1.
+dgamma(x, shape = 1)   
+```
+
+## Setting the seed for reproducible random numbers {#setting_seed}
+If you want to generate a sequence of random numbers and then be able to reproduce that same sequence of random numbers later you can set the random number seed generator with `set.seed()`.  This is a critical aspect of [reproducible research](https://en.wikipedia.org/wiki/Reproducibility).
+
+For example, we can reproduce a random generation of 10 values from a normal distribution:
+
+
+```{r}
+set.seed(197)
+rnorm(n = 10, mean = 0, sd = 1)
+
+
+set.seed(197)
+rnorm(n = 10, mean = 0, sd = 1)
+```
+
+## Comparing numeric values {#compare_numeric_values}
+There are multiple ways to compare numeric values and vectors.  This includes [logical operators](#numeric_comparison) along with testing for [exact equality](#numeric_exact) and also [near equality](#numeric_near).
+
+
+### Comparison Operators {#numeric_comparison}
+The normal binary operators allow you to compare numeric values and provides the answer in logical form:
+
+
+```{r, eval=FALSE}
+x < y     # is x less than y
+x > y     # is x greater than y
+x <= y    # is x less than or equal to y
+x >= y    # is x greater than or equal to y
+x == y    # is x equal to y
+x != y    # is x not equal to y
+```
+
+These operations can be used for single number comparison:
+
+
+```{r}
+x <- 9
+y <- 10
+
+x == y
+```
+
+and also for comparison of numbers within vectors:
+
+
+```{r}
+x <- c(1, 4, 9, 12)
+y <- c(4, 4, 9, 13)
+
+x == y
+```
+
+Note that logical values `TRUE` and `FALSE` equate to 1 and 0 respectively.  So if you want to identify the number of equal values in two vectors you can wrap the operation in the `sum()` function:
+
+
+```{r}
+# How many pairwise equal values are in vectors x and y
+sum(x == y)    
+```
+
+If you need to identify the location of pairwise equalities in two vectors you can wrap the operation in the `which()` function:
+
+
+```{r}
+# Where are the pairwise equal values located in vectors x and y
+which(x == y)    
+```
+
+
+### Exact Equality {#numeric_exact}
+To test if two objects are exactly equal:
+
+
+```{r}
+x <- c(4, 4, 9, 12)
+y <- c(4, 4, 9, 13)
+
+identical(x, y)
+```
+
+
+```{r}
+x <- c(4, 4, 9, 12)
+y <- c(4, 4, 9, 12)
+
+identical(x, y)
+```
+
+
+### Floating Point Comparison {#numeric_near}
+Sometimes you wish to test for 'near equality'.  The `all.equal()` function allows you to test for equality with a difference tolerance of 1.5e-8.
+
+
+```{r}
+x <- c(4.00000005, 4.00000008)
+y <- c(4.00000002, 4.00000006)
+
+all.equal(x, y)
+```
+
+If the difference is greater than the tolerance level the function will return the mean relative difference:
+
+
+```{r}
+x <- c(4.005, 4.0008)
+y <- c(4.002, 4.0006)
+
+all.equal(x, y)
+```
+
+## Rounding numbers {#round_numbers}
+There are many ways of rounding to the nearest integer, up, down, or toward a specified decimal place. The following illustrates the common ways to round.
+
+
+```{r}
+x <- c(1, 1.35, 1.7, 2.05, 2.4, 2.75, 3.1, 3.45, 3.8, 4.15, 
+       4.5, 4.85, 5.2, 5.55, 5.9)
+
+# Round to the nearest integer
+round(x)
+
+# Round up
+ceiling(x)
+ 
+# Round down
+floor(x)
+ 
+# Round to a specified decimal
+round(x, digits = 1)
+```
+
+
+# Dealing with Character Strings {#characters}
+Dealing with character strings is often under-emphasized in data analysis training.  The focus typically remains on numeric values; however, the growth in data collection is also resulting in greater bits of information embedded in character strings.  Consequently, handling, cleaning and processing character strings is becoming a prerequisite in daily data analysis.  This chapter is meant to give you the foundation of working with characters by covering some [basics](#character_basics) followed by learning how to [manipulate strings](#string_manipulation) using base R functions along with using the simplified `stringr` package.  
+
+## Character string basics {#character_basics}
+In this section you'll learn the basics of creating, converting and printing character strings followed by how to assess the number of elements and characters in a string.
+
+### Creating Strings
+
+The most basic way to create strings is to use quotation marks and assign a string to an object similar to creating number sequences.
+
+
+```{r}
+a <- "learning to create"    # create string a
+b <- "character strings"     # create string b
+```
+
+The `paste()` function provides a versatile means for creating and building strings. It takes one or more R objects, converts them to "character", and then it concatenates (pastes) them to form one or several character strings.
+
+
+```{r}
+# paste together string a & b
+paste(a, b)                      
+```
+
+
+```{r}
+# paste character and number strings (converts numbers to 
+# character class)
+paste("The life of", pi)
+
+# paste multiple strings
+paste("I", "love", "R")            
+
+# paste multiple strings with a separating character
+paste("I", "love", "R", sep = "-")  
+
+# use paste0() to paste without spaces btwn characters
+paste0("I", "love", "R")            
+
+# paste objects with different lengths
+paste("R", 1:5, sep = " v1.")
+```
+
+
+### Converting to Strings
+Test if strings are characters with `is.character()` and convert strings to character with `as.character()` or with `toString()`.
+
+```{r}
+a <- "The life of"    
+b <- pi
+
+is.character(a)
+
+is.character(b)
+
+c <- as.character(b)
+is.character(c)
+
+toString(c("Aug", 24, 1980))
+```
+
+### Printing Strings
+The common printing methods include:
+
+- `print()`: generic printing
+- `noquote()`: print with no quotes
+- `cat()`: concatenate and print with no quotes
+- `sprintf()`: a wrapper for the C function `sprintf`, that returns a character vector containing a formatted combination of text and variable values
+
+The primary printing function in R is `print()`
+
+
+```{r}
+x <- "learning to print strings"    
+
+# basic printing
+print(x)
+
+# print without quotes
+print(x, quote = FALSE)
+```
+
+An alternative to printing a string without quotes is to use `noquote()`
+
+
+```{r}
+noquote(x)
+```
+
+Another very useful function is `cat()` which allows us to concatenate objects and print them either on screen or to a file.  The output result is very similar to `noquote()`; however, `cat()` does not print the numeric line indicator.  As a result, `cat()` can be useful for printing nicely formated responses to users.
+
+
+```{r}
+# basic printing (similar to noquote)
+cat(x) 
+
+# combining character strings
+cat(x, "in R")
+
+# basic printing of alphabet
+cat(letters)     
+
+# specify a seperator between the combined characters
+cat(letters, sep = "-")  
+
+# collapse the space between the combine characters
+cat(letters, sep = "")  
+```
+
+You can also format the line width for printing long strings using the `fill` argument:
+
+
+```{r}
+x <- "Today I am learning how to print strings."
+y <- "Tomorrow I plan to learn about textual analysis."
+z <- "The day after I will take a break and drink a beer."
+
+cat(x, y, z, fill = 0)
+
+cat(x, y, z, fill = 5)
+```
+
+`sprintf()` is a useful printing function for precise control of the output. It is a wrapper for the C function `sprintf` and returns a character vector containing a formatted combination of text and variable values.
+
+To substitute in a string or string variable, use `%s`:
+
+```{r}
+x <- "print strings"
+
+# substitute a single string/variable
+sprintf("Learning to %s in R", x) 
+
+# substitute multiple strings/variables
+y <- "in R"
+sprintf("Learning to %s %s", x, y) 
+```
+
+For integers, use `%d` or a variant:
+
+
+```{r}
+version <- 3
+
+# substitute integer
+sprintf("This is R version:%d", version)
+
+# print with leading spaces
+sprintf("This is R version:%4d", version)  
+
+# can also lead with zeros
+sprintf("This is R version:%04d", version)
+```
+
+
+For floating-point numbers, use `%f` for standard notation, and `%e` or `%E` for exponential notation:
+
+```{r}
+sprintf("%f", pi)         # '%f' indicates 'fixed point' decimal notation
+
+sprintf("%.3f", pi)       # decimal notation with 3 decimal digits
+
+sprintf("%1.0f", pi)      # 1 integer and 0 decimal digits
+
+sprintf("%5.1f", pi)      # decimal notation with 5 total decimal digits and 
+                          # only 1 to the right of the decimal point
+
+sprintf("%05.1f", pi)     # same as above but fill empty digits with zeros
+
+sprintf("%+f", pi)        # print with sign (positive)
+
+sprintf("% f", pi)        # prefix a space
+
+sprintf("%e", pi)         # exponential decimal notation 'e'
+
+sprintf("%E", pi)         # exponential decimal notation 'E'
+```
+
+
+### Counting string elements and characters
+To count the number of elements in a string use `length()`:
+
+
+```{r}
+length("How many elements are in this string?")
+
+length(c("How", "many", "elements", "are", "in", "this", "string?"))
+```
+
+To count the number of characters in a string use `nchar()`:
+
+
+```{r}
+nchar("How many characters are in this string?")
+
+nchar(c("How", "many", "characters", "are", "in", "this", "string?"))
+```
+
+
+## String manipulation with base R {#string_manipulation}
+Basic string manipulation typically inludes case conversion, simple character and substring replacement, adding/removing whitespace, and performing set operations to compare similarities and differences between two character vectors.  These operations can all be performed with base R functions; however, some operations (or at least their syntax) are simplified with the `stringr` package which we will discuss in the next section.  This section illustrates the base R string manipulation capabilities.
+
+### Case conversion
+To convert all upper case characters to lower case use `tolower()`:
+
+
+```{r}
+x <- "Learning To MANIPULATE strinGS in R"
+
+tolower(x)
+```
+
+To convert all lower case characters to upper case use `toupper()`:
+
+
+```{r}
+toupper(x)
+```
+
+### Simple Character Replacement
+To replace a character (or multiple characters) in a string you can use `chartr()`:
+
+
+```{r}
+# replace 'A' with 'a'
+x <- "This is A string."
+chartr(old = "A", new = "a", x)
+
+# multiple character replacements
+# replace any 'd' with 't' and any 'z' with 'a'
+y <- "Tomorrow I plzn do lezrn zbout dexduzl znzlysis."
+chartr(old = "dz", new = "ta", y)
+```
+
+Note that `chartr()` replaces every identified letter for replacement so the only time I use it is when I am certain that I want to change every possible occurence of a letter.
+
+### String Abbreviations
+To abbreviate strings you can use `abbreviate()`:
+
+```{r}
+streets <- c("Main", "Elm", "Riverbend", "Mario", "Frederick")
+
+# default abbreviations
+abbreviate(streets)
+
+# set minimum length of abbreviation
+abbreviate(streets, minlength = 2)
+```
+
+Note that if you are working with U.S. states, R already has a pre-built vector with state names (`state.name`).  Also, there is a pre-built vector of abbreviated state names (`state.abb`).
+
+### Extract/Replace Substrings
+To extract or replace substrings in a character vector there are three primary base R functions to use: `substr()`, `substring()`, and `strsplit()`.  The purpose of `substr()` is to extract and replace substrings with specified starting and stopping characters:
+
+
+```{r}
+alphabet <- paste(LETTERS, collapse = "")
+
+# extract 18th character in string
+substr(alphabet, start = 18, stop = 18)
+
+# extract 18-24th characters in string
+substr(alphabet, start = 18, stop = 24)
+
+# replace 1st-17th characters with `R`
+substr(alphabet, start = 19, stop = 24) <- "RRRRRR"
+alphabet
+```
+
+The purpose of `substring()` is to extract and replace substrings with only a specified starting point.  `substring()` also allows you to extract/replace in a recursive fashion:
+
+
+```{r}
+alphabet <- paste(LETTERS, collapse = "")
+
+# extract 18th through last character
+substring(alphabet, first = 18)
+
+# recursive extraction; specify start position only
+substring(alphabet, first = 18:24)
+
+# recursive extraction; specify start and stop positions
+substring(alphabet, first = 1:5, last = 3:7)
+```
+
+To split the elements of a character string use `strsplit()`:
+
+```{r}
+z <- "The day after I will take a break and drink a beer."
+strsplit(z, split = " ")
+
+a <- "Alabama-Alaska-Arizona-Arkansas-California"
+strsplit(a, split = "-")
+```
+
+Note that the output of `strsplit()` is a list.  To convert the output to a simple atomic vector simply wrap in `unlist()`:
+
+
+```{r}
+unlist(strsplit(a, split = "-"))
+```
+
+## String manipulation with `stringr`
+The [`stringr`](http://cran.r-project.org/web/packages/stringr/index.html) package was developed by Hadley Wickham to act as simple wrappers that make R's string functions more consistent, simple, and easier to use.  To replicate the functions in this section you will need to install and load the `stringr` package:
+
+
+```{r, eval=FALSE}
+# install stringr package
+install.packages("stringr")
+
+# load package
+library(stringr)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(stringr)
+```
+
+### Basic Operations
+There are three string functions that are closely related to their base R equivalents, but with a few enhancements:
+
+* Concatenate with [`str_c()`](#str_c)
+* Number of characters with [`str_length()`](#str_length)
+* Substring with [`str_sub()`](#str_sub)
+
+{#str_c}
+`str_c()` is equivalent to the `paste()` functions: 
+
+
+```{r}
+# same as paste0()
+str_c("Learning", "to", "use", "the", "stringr", "package")
+
+# same as paste()
+str_c("Learning", "to", "use", "the", "stringr", "package", sep = " ")
+
+# allows recycling 
+str_c(letters, " is for", "...")
+```
+
+{#str_length}
+`str_length()` is similiar to the `nchar()` function; however, `str_length()` behaves more appropriately with missing ('NA') values: 
+
+
+```{r}
+# some text with NA
+text = c("Learning", "to", NA, "use", "the", NA, "stringr", "package")
+
+# compare `str_length()` with `nchar()`
+nchar(text)
+
+str_length(text)
+```
+
+{#str_sub}
+`str_sub()` is similar to `substr()`; however, it returns a zero length vector if any of its inputs are zero length, and otherwise expands each argument to match the longest. It also accepts negative positions, which are calculated from the left of the last character.
+
+
+```{r}
+x <- "Learning to use the stringr package"
+
+# alternative indexing
+str_sub(x, start = 1, end = 15)
+
+str_sub(x, end = 15)
+
+str_sub(x, start = 17)
+
+str_sub(x, start = c(1, 17), end = c(15, 35))
+
+# using negative indices for start/end points from end of string
+str_sub(x, start = -1)
+
+str_sub(x, start = -19)
+
+str_sub(x, end = -21)
+
+# Replacement
+str_sub(x, end = 15) <- "I know how to use"
+x
+```
+
+### Duplicate Characters within a String
+A new functionality that stringr provides in which base R does not have a specific function for is character duplication:
+
+
+```{r}
+str_dup("beer", times = 3)
+
+str_dup("beer", times = 1:3)
+
+
+# use with a vector of strings
+states_i_luv <- state.name[c(6, 23, 34, 35)]
+str_dup(states_i_luv, times = 2)
+```
+
+### Remove Leading and Trailing Whitespace
+A common task of string processing is that of parsing text into individual words.  Often, this results in words having blank spaces (whitespaces) on either end of the word. The `str_trim()` can be used to remove these spaces:
+
+
+```{r}
+text <- c("Text ", "  with", " whitespace ", " on", "both ", " sides ")
+
+# remove whitespaces on the left side
+str_trim(text, side = "left")
+
+# remove whitespaces on the right side
+str_trim(text, side = "right")
+
+# remove whitespaces on both sides
+str_trim(text, side = "both")
+```
+
+### Pad a String with Whitespace
+To add whitespace, or to *pad* a string, use `str_pad()`.  You can also use `str_pad()` to pad a string with specified characters.
+
+
+```{r}
+str_pad("beer", width = 10, side = "left")
+
+str_pad("beer", width = 10, side = "both")
+
+str_pad("beer", width = 10, side = "right", pad = "!")
+```
+
+## Set operatons for character strings
+There are also base R functions that allows for assessing the set union, intersection, difference, equality, and membership of two vectors.  
+
+### Set Union
+To obtain the elements of the union between two character vectors use `union()`:
+
+
+```{r}
+set_1 <- c("lagunitas", "bells", "dogfish", "summit", "odell")
+set_2 <- c("sierra", "bells", "harpoon", "lagunitas", "founders")
+
+union(set_1, set_2)
+```
+
+### Set Intersection
+To obtain the common elements of two character vectors use `intersect()`:
+
+
+```{r}
+intersect(set_1, set_2)
+```
+
+### Identifying Different Elements
+To obtain the non-common elements, or the difference, of two character vectors use `setdiff()`:
+
+```{r}
+# returns elements in set_1 not in set_2
+setdiff(set_1, set_2)
+
+# returns elements in set_2 not in set_1
+setdiff(set_2, set_1)
+```
+
+### Testing for Element Equality
+To test if two vectors contain the same elements regardless of order use `setequal()`:
+
+
+```{r}
+set_3 <- c("woody", "buzz", "rex")
+set_4 <- c("woody", "andy", "buzz")
+set_5 <- c("andy", "buzz", "woody")
+
+setequal(set_3, set_4)
+
+setequal(set_4, set_5)
+```
+
+### Testing for *Exact* Equality
+To test if two character vectors are equal in content and order use `identical()`:
+
+
+```{r}
+set_6 <- c("woody", "andy", "buzz")
+set_7 <- c("andy", "buzz", "woody")
+set_8 <- c("woody", "andy", "buzz")
+
+identical(set_6, set_7)
+
+identical(set_6, set_8)
+```
+
+### Identifying if Elements are Contained in a String
+To test if an element is contained within a character vector use `is.element()` or `%in%`:
+
+```{r}
+good <- "andy"
+bad <- "sid"
+
+is.element(good, set_8)
+
+good %in% set_8
+
+bad %in% set_8
+```
+
+### Sorting a String
+To sort a character vector use `sort()`:
+
+
+```{r}
+sort(set_8)
+
+sort(set_8, decreasing = TRUE)
+```

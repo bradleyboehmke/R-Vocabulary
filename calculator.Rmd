@@ -1,0 +1,78 @@
+---
+title: "R as a Calculator"
+author: NULL
+date: NULL
+output:
+  html_document:
+    keep_md: true
+---
+
+At its most basic function R can be used as a calculator.  When applying basic arithmetic, the PEMBDAS order of operations applies: **p**arentheses first followed by **e**xponentiation, **m**ultiplication and **d**ivision, and final **a**ddition and **s**ubtraction.
+
+```{r, collapse=TRUE}
+8 + 9 / 5 ^ 2
+
+8 + 9 / (5 ^ 2)
+
+8 + (9 / 5) ^ 2
+
+(8 + 9) / 5 ^ 2
+```
+
+By default R will display seven digits but this can be changed using `options()` as previously outlined.
+
+```{r, collapse=TRUE}
+1 / 7
+
+options(digits = 3)
+1 / 7
+```
+
+Also, large numbers will be expressed in scientific notation which can also be adjusted using `options()`.
+
+```{r, collapse=TRUE}
+888888 * 888888
+
+options(digits = 10)
+888888 * 888888
+```
+
+Note that the largest number of digits that can be displayed is 22.  Requesting any larger number of digits will result in an error message.
+
+```{r, warning=TRUE, message=TRUE, error=TRUE, collapse=TRUE}
+pi
+
+options(digits = 22)
+pi
+
+options(digits = 23)
+pi
+```
+
+When performing undefined calculations R will produce `Inf` and `NaN` outputs.
+
+```{r, warning=TRUE, message=TRUE, error=TRUE, collapse=TRUE}
+1 / 0           # infinity
+
+Inf - Inf       # infinity minus infinity
+
+-1 / 0          # negative infinity
+
+0 / 0           # not a number
+
+sqrt(-9)        # square root of -9
+
+```
+
+The last two functions to mention are the integer divide (`%/%`) and modulo (`%%`) functions.  The integer divide function will give the integer part of a fraction while the modulo will provide the remainder.
+
+```{r, warning=TRUE, message=TRUE, error=TRUE, collapse=TRUE}
+42 / 4          # regular division
+
+42 %/% 4        # integer division
+
+42 %% 4         # modulo (remainder)
+```
+
+
+
