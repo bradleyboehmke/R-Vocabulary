@@ -22,6 +22,7 @@ A data frame is the most common way of storing data in R and, generally, is the 
 
 # Creating
 Data frames are usually created by reading in a dataset using the `read.table()` or `read.csv()`. However, data frames can also be created explicitly with the `data.frame()` function or they can be coerced from other types of objects like lists:
+
 ```{r, collapse=TRUE}
 df <- data.frame(col1 = 1:3, 
                  col2 = c("this", "is", "text"), 
@@ -147,6 +148,7 @@ attributes(df)
 
 # Subsetting
 Data frames possess the characteristics of both lists and matrices: if you subset with a single vector, they behave like lists; if you subset with two vectors, they behave like matrices:
+
 ```{r, collapse=TRUE}
 df
 
@@ -171,12 +173,51 @@ df[ , v]
 ```
 
 Note that subsetting data frames with the`[` operator will simplify<sup><a href="#fn1" id="ref1">1</a></sup> the results to the lowest possible dimension.  To avoid this you can introduce the `drop = FALSE` argument:
+
 ```{r, collapse=TRUE}
 # simplifying results in a named vector
 df[, 2]
 
 # preserving results in a 3x1 data frame
 df[, 2, drop = FALSE]
+```
+
+
+You can also subset data frames based on conditional statements.  To illustrate we'll use the built in `mtcars` data frame:
+
+```{r, collapse=TRUE}
+head(mtcars)
+```
+
+If we want to subset `mtcars` for all rows where `mpg` is greater than 20 we can perform this in two ways:
+
+```{r, collapse=TRUE}
+# using brackets
+mtcars[mtcars$mpg > 20, ]
+
+# using the simplified subset function
+subset(mtcars, mpg > 20)
+```
+
+
+We can add on to the conditional statement if we want to filter for multiple conditions. You can see how the `subset()` function helps to simplify the process by only requiring you to state the data frame once and then directly call the variables to perform the condition on.
+
+```{r, collapse=TRUE}
+# using brackets
+mtcars[mtcars$mpg > 20 & mtcars$cyl == 6, ]
+
+# using the simplified subset function
+subset(mtcars, mpg > 20 & cyl == 6)
+```
+
+And if we want to perform this filtering along with return only specified columns we simply state the columns we want to return.
+
+```{r, collapse=TRUE}
+# using brackets
+mtcars[mtcars$mpg > 20 & mtcars$cyl == 6, c("mpg", "cyl", "wt")]
+
+# using the simplified subset function
+subset(mtcars, mpg > 20 & cyl == 6, c("mpg", "cyl", "wt"))
 ```
 
 <br>

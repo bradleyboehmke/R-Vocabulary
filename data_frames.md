@@ -16,6 +16,7 @@ A data frame is the most common way of storing data in R and, generally, is the 
 # Creating
 Data frames are usually created by reading in a dataset using the `read.table()` or `read.csv()`. However, data frames can also be created explicitly with the `data.frame()` function or they can be coerced from other types of objects like lists:
 
+
 ```r
 df <- data.frame(col1 = 1:3, 
                  col2 = c("this", "is", "text"), 
@@ -281,6 +282,7 @@ attributes(df)
 # Subsetting
 Data frames possess the characteristics of both lists and matrices: if you subset with a single vector, they behave like lists; if you subset with two vectors, they behave like matrices:
 
+
 ```r
 df
 ##      col.1 col.2 col.3    col.4
@@ -331,6 +333,7 @@ df[ , v]
 
 Note that subsetting data frames with the`[` operator will simplify<sup><a href="#fn1" id="ref1">1</a></sup> the results to the lowest possible dimension.  To avoid this you can introduce the `drop = FALSE` argument:
 
+
 ```r
 # simplifying results in a named vector
 df[, 2]
@@ -342,6 +345,101 @@ df[, 2, drop = FALSE]
 ## row1  this
 ## row2    is
 ## row3  text
+```
+
+
+You can also subset data frames based on conditional statements.  To illustrate we'll use the built in `mtcars` data frame:
+
+
+```r
+head(mtcars)
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+```
+
+If we want to subset `mtcars` for all rows where `mpg` is greater than 20 we can perform this in two ways:
+
+
+```r
+# using brackets
+mtcars[mtcars$mpg > 20, ]
+##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710     22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona  21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+
+# using the simplified subset function
+subset(mtcars, mpg > 20)
+##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710     22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona  21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+```
+
+
+We can add on to the conditional statement if we want to filter for multiple conditions. You can see how the `subset()` function helps to simplify the process by only requiring you to state the data frame once and then directly call the variables to perform the condition on.
+
+
+```r
+# using brackets
+mtcars[mtcars$mpg > 20 & mtcars$cyl == 6, ]
+##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+
+# using the simplified subset function
+subset(mtcars, mpg > 20 & cyl == 6)
+##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+```
+
+And if we want to perform this filtering along with return only specified columns we simply state the columns we want to return.
+
+
+```r
+# using brackets
+mtcars[mtcars$mpg > 20 & mtcars$cyl == 6, c("mpg", "cyl", "wt")]
+##                 mpg cyl    wt
+## Mazda RX4      21.0   6 2.620
+## Mazda RX4 Wag  21.0   6 2.875
+## Hornet 4 Drive 21.4   6 3.215
+
+# using the simplified subset function
+subset(mtcars, mpg > 20 & cyl == 6, c("mpg", "cyl", "wt"))
+##                 mpg cyl    wt
+## Mazda RX4      21.0   6 2.620
+## Mazda RX4 Wag  21.0   6 2.875
+## Hornet 4 Drive 21.4   6 3.215
 ```
 
 <br>
